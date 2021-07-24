@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">EnglishMusic</string>
+     <dimen name="cardMargin">20dp</dimen>
+    <string name="eminem">Eminem</string>
+    <dimen name="marginStart">16dp</dimen>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/music_navigation"
+    app:startDestination="@id/fragmentArtist">
+
+    <fragment
+        android:id="@+id/fragmentArtist"
+        android:name="com.example.englishmusic.fragments.FragmentArtist"
+        android:label="FragmentArtist" >
+        <action
+            android:id="@+id/action_fragmentArtist_to_albumFragment"
+            app:destination="@id/albumFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.englishmusic.fragments.SearchFragment"
+        android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.englishmusic.fragments.FavoriteFragment"
+        android:label="FavoriteFragment" />
+    <fragment
+        android:id="@+id/albumFragment"
+        android:name="com.example.englishmusic.fragments.AlbumFragment"
+        android:label="AlbumFragment" >
+        <action
+            android:id="@+id/action_albumFragment_to_songFragment"
+            app:destination="@id/songFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/songFragment"
+        android:name="com.example.englishmusic.fragments.SongFragment"
+        android:label="SongFragment" />
+</navigation>
