@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
  private val musicInfoViewModel: MusicInfoViewModel by viewModels()
 
-    private val mainViewModel:MainViewModel by viewModels()
+private val mainViewModel:MainViewModel by viewModels()
 
 
 
@@ -49,14 +49,18 @@ private var curPlayingSong:SongItem? = null
           binding.buttonNavigation.setupWithNavController(nav)
 
 
-        mainViewModel.mediaItem.observe(this, Observer {
-            it.data?.get(0)?.let { it1 -> mainViewModel.playOrToggleSong(it1) }
 
-        })
 
-        mainViewModel.isConnected.observe(this, Observer {
-            Toast.makeText(this,it.hasBeenHandled.toString(),Toast.LENGTH_SHORT).show()
-        })
+
+
+
+           mainViewModel.mediaItem.observe(this, Observer {
+
+           })
+
+
+
+
 
 
         }

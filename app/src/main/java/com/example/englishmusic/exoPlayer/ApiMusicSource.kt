@@ -22,9 +22,9 @@ class ApiMusicSource @Inject constructor(
 
     var songs = emptyList<MediaMetadataCompat>()
 
-    suspend fun fetchMediaData() = withContext(Dispatchers.IO) {
+    suspend fun fetchMediaData(album:String) = withContext(Dispatchers.Main) {
         state = State.STATE_INITIALIZING
-        val allSongs = musicDatabase.getAllSong()
+        val allSongs = musicDatabase.getAllSong(album)
         if (allSongs != null) {
             songs = allSongs.map { song ->
                 MediaMetadataCompat.Builder()

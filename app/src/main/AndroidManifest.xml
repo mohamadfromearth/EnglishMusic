@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EnglishMusic">
-        <service android:name=".exoPlayer.MusicService">
+        <service android:name=".exoPlayer.MusicService" android:enabled="true">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>

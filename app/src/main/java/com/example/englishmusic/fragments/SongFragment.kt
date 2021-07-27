@@ -27,7 +27,7 @@ class SongFragment: Fragment(R.layout.fragment_song) {
 
     private  var binding: FragmentSongBinding? = null
 
-    lateinit var mainViewModel: MainViewModel
+    private lateinit var mainViewModel: MainViewModel
 
 
 
@@ -41,17 +41,18 @@ class SongFragment: Fragment(R.layout.fragment_song) {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
 
-        val intent = Intent(requireContext(),MusicService::class.java)
-        intent.putExtra("album",arguments?.getString("album"))
-        requireActivity().startService(intent)
 
         setUpRecyclerView()
         subscribeToObservers()
 
-
+         binding!!.test2.setOnClickListener {
+             mainViewModel.album = ""
+             mainViewModel.init()
+         }
 
 
        songAdapter.setOnItemClick {
+
            mainViewModel.playOrToggleSong(it)
 
        }
@@ -68,6 +69,11 @@ class SongFragment: Fragment(R.layout.fragment_song) {
     }
 
     private fun subscribeToObservers(){
+
+
+
+        mainViewModel.init()
+
 
         mainViewModel.curPlayingSong.observe(viewLifecycleOwner, Observer {
              it?.let {

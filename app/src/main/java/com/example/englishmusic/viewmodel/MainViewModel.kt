@@ -1,5 +1,6 @@
 package com.example.englishmusic.viewmodel
 
+import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.util.Log
@@ -26,6 +27,7 @@ class MainViewModel @Inject constructor(
     private val _mediaItem = MutableLiveData<Resource<List<SongItem>>>()
     val mediaItem: LiveData<Resource<List<SongItem>>> = _mediaItem
 
+    var album = "hghg"
 
     val isConnected = musicServiceConnection.isConnected
     val networkError = musicServiceConnection.networkError
@@ -33,10 +35,17 @@ class MainViewModel @Inject constructor(
     val playbackState = musicServiceConnection.playbackState
 
 
+
     init {
 
+
+    }
+
+    fun init(){
+
         _mediaItem.postValue(Resource.loading(null))
-        musicServiceConnection.subscribe(MEDIA_ROOT_ID,object: MediaBrowserCompat.SubscriptionCallback(){
+
+        musicServiceConnection.subscribe(album,object: MediaBrowserCompat.SubscriptionCallback(){
             override fun onChildrenLoaded(
                 parentId: String,
                 children: MutableList<MediaBrowserCompat.MediaItem>
@@ -61,9 +70,18 @@ class MainViewModel @Inject constructor(
         })
     }
 
+
+
     fun skipToNextSong(){
         musicServiceConnection.transportControls.skipToNext()
     }
+
+  fun unsubscribe(album:String){
+      musicServiceConnection.mediaBrowser.unsubscribe(album,object : MediaBrowserCompat.SubscriptionCallback(){})
+
+
+  }
+
 
     fun skipToPreviousSong(){
         musicServiceConnection.transportControls.skipToPrevious()

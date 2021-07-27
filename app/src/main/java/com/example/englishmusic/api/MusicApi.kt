@@ -18,8 +18,8 @@ interface MusicApi {
     suspend fun getAlbum(@Path("artist")artist:String):Response<Album>
 
 
-    @GET("songs/getAllSong")
-    suspend fun getSongs():Response<Song>
+    @GET("songs/getSongs/{album}")
+    suspend fun getSongs(@Path("album")album:String):Response<Song>
 
 
 

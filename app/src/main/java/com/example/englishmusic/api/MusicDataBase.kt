@@ -5,9 +5,9 @@ import java.lang.Exception
 
 class MusicDataBase {
 
-    suspend fun getAllSong(): Song? {
+    suspend fun getAllSong(album:String): Song? {
 
-           return  RetrofitInstance.api.getSongs().body()
+           return  RetrofitInstance.api.getSongs(album).body()
 
     }
 }

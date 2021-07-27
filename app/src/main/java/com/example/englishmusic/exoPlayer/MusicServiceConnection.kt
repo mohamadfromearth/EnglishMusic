@@ -17,7 +17,8 @@ import kotlin.math.log
 
 class MusicServiceConnection(
     context:Context
-) {
+
+    ) {
     private val _isConnected = MutableLiveData<Event<Resource<Boolean>>>()
     val isConnected: LiveData<Event<Resource<Boolean>>> = _isConnected
 
@@ -30,30 +31,46 @@ class MusicServiceConnection(
     private val _curPlayingSong = MutableLiveData<MediaMetadataCompat?>()
     val curPlayingSong: LiveData<MediaMetadataCompat?> = _curPlayingSong
 
+
+
     lateinit var mediaController: MediaControllerCompat
 
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback(context)
 
-    private val mediaBrowser = MediaBrowserCompat(
+    val bundle = Bundle().apply {
+        putString("album","skajdklasdk")
+    }
+
+
+     val mediaBrowser = MediaBrowserCompat(
         context,
         ComponentName(
             context,
             MusicService::class.java
         ),
         mediaBrowserConnectionCallback,
-        null
-    ).apply { connect()
-    }
+        bundle
+    ).apply{
+        connect()
+     }
+
+
 
     val transportControls: MediaControllerCompat.TransportControls
         get() = mediaController.transportControls
 
     fun subscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
-        mediaBrowser.subscribe(parentId, callback)
+
+           mediaBrowser.subscribe(parentId, callback)
+
+
+
     }
 
     fun unsubscribe(parentId: String, callback: MediaBrowserCompat.SubscriptionCallback) {
         mediaBrowser.unsubscribe(parentId, callback)
+
+
     }
 
     private inner class MediaBrowserConnectionCallback(
