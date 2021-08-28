@@ -1,5 +1,6 @@
 package com.example.englishmusic.exoPlayer
 
+import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -34,14 +35,66 @@ class ApiMusicSource @Inject constructor(
                     .putString(METADATA_KEY_DISPLAY_TITLE, song.name)
                     .putString(METADATA_KEY_DISPLAY_ICON_URI, song.cover)
                     .putString(METADATA_KEY_MEDIA_URI, song.songUrl)
-                    .putString(METADATA_KEY_ALBUM_ART_URI, song.cover)
+                    .putString(METADATA_KEY_ALBUM_ART_URI, song.songUrl)
                     .putString(METADATA_KEY_DISPLAY_SUBTITLE, song.artist)
-                    .putString(METADATA_KEY_DISPLAY_DESCRIPTION, song.artist)
+                    .putLong(METADATA_KEY_DURATION,song.duration!!.toLong())
                     .build()
+            }
+
+
+
+        }
+        state = State.STATE_INITIALIZED
+    }
+
+    suspend fun fetchMediaDataFromSearch(search:String){
+        state = State.STATE_INITIALIZING
+        val allSong = musicDatabase.getSearchSong(search)
+        if (allSong!=null){
+            songs = allSong.map { song ->
+                MediaMetadataCompat.Builder()
+                    .putString(METADATA_KEY_ARTIST, song.name)
+                    .putString(METADATA_KEY_MEDIA_ID, song._id)
+                    .putString(METADATA_KEY_TITLE, song.name)
+                    .putString(METADATA_KEY_DISPLAY_TITLE, song.name)
+                    .putString(METADATA_KEY_DISPLAY_ICON_URI, song.imgUrl)
+                    .putString(METADATA_KEY_MEDIA_URI, song.url)
+                    .putString(METADATA_KEY_ALBUM_ART_URI, song.url)
+                    .putString(METADATA_KEY_DISPLAY_SUBTITLE, song.artist)
+                    .putLong(METADATA_KEY_DURATION,song.duration.toLong())
+                    .build()
+
             }
         }
         state = State.STATE_INITIALIZED
     }
+
+
+    suspend fun fetchFavoriteMetaData(token:String){
+        state = State.STATE_INITIALIZING
+        val allSongs = musicDatabase.getFavoriteSong(token)
+        if (allSongs != null) {
+            songs = allSongs.map { song ->
+                MediaMetadataCompat.Builder()
+                    .putString(METADATA_KEY_ARTIST, song.artist)
+                    .putString(METADATA_KEY_MEDIA_ID, song._id)
+                    .putString(METADATA_KEY_TITLE, song.name)
+                    .putString(METADATA_KEY_DISPLAY_TITLE, song.name)
+                    .putString(METADATA_KEY_DISPLAY_ICON_URI, song.cover)
+                    .putString(METADATA_KEY_MEDIA_URI, song.songUrl)
+                    .putString(METADATA_KEY_ALBUM_ART_URI, song.songUrl)
+                    .putString(METADATA_KEY_DISPLAY_SUBTITLE, song.artist)
+                    .putLong(METADATA_KEY_DURATION,song.duration!!.toLong())
+                    .build()
+            }
+
+
+
+        }
+        state = State.STATE_INITIALIZED
+
+    }
+
 
     fun asMediaSource(dataSourceFactory: DefaultDataSourceFactory): ConcatenatingMediaSource {
         val concatenatingMediaSource = ConcatenatingMediaSource()
@@ -54,12 +107,17 @@ class ApiMusicSource @Inject constructor(
     }
 
     fun asMediaItems() = songs.map { song ->
+val bundle = Bundle().apply {
+    putLong("duration",song.getLong(METADATA_KEY_DURATION))
+}
+
         val desc = MediaDescriptionCompat.Builder()
             .setMediaUri(song.getString(METADATA_KEY_MEDIA_URI).toUri())
             .setTitle(song.description.title)
             .setSubtitle(song.description.subtitle)
             .setMediaId(song.description.mediaId)
             .setIconUri(song.description.iconUri)
+            .setExtras(bundle)
             .build()
         MediaBrowserCompat.MediaItem(desc, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
     }.toMutableList()

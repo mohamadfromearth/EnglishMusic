@@ -18,6 +18,8 @@ class SongViewModel @Inject constructor(
     private val musicServiceConnection:MusicServiceConnection
 ) :ViewModel() {
 
+
+
  private val playbackState = musicServiceConnection.playbackState
 
  private val _curSongDuration = MutableLiveData<Long>()

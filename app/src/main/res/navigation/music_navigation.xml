@@ -10,26 +10,82 @@
         android:label="FragmentArtist" >
         <action
             android:id="@+id/action_fragmentArtist_to_albumFragment"
-            app:destination="@id/albumFragment" />
+            app:destination="@id/albumFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.englishmusic.fragments.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+        <action
+            android:id="@+id/action_searchFragment_to_albumFragment"
+            app:destination="@id/albumFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.englishmusic.fragments.FavoriteFragment"
-        android:label="FavoriteFragment" />
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out" />
+    </fragment>
     <fragment
         android:id="@+id/albumFragment"
         android:name="com.example.englishmusic.fragments.AlbumFragment"
         android:label="AlbumFragment" >
         <action
             android:id="@+id/action_albumFragment_to_songFragment"
-            app:destination="@id/songFragment" />
+            app:destination="@id/songFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
     </fragment>
     <fragment
         android:id="@+id/songFragment"
         android:name="com.example.englishmusic.fragments.SongFragment"
-        android:label="SongFragment" />
+        android:label="SongFragment" >
+        <action
+            android:id="@+id/action_songFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/songPlayingFragment"
+        android:name="com.example.englishmusic.fragments.SongPlayingFragment"
+        android:label="SongPlayingFragment" />
+
+    <action
+        android:id="@+id/GlobalActionToSongPlayingFragment"
+        app:destination="@+id/songPlayingFragment"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_in_out"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/slide_in_out" />
+
 </navigation>

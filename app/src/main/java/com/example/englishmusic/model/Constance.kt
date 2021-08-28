@@ -11,6 +11,9 @@ class Constance {
         const val UPDATE_PLAYER_POSITION_INTERVAL = 100L
 
 
+        const val SEARCH_MUSIC_DELAY = 500L
+
+
         const val BASE_URL = "http://192.168.1.111:3000/api/"
 
         const val NOTIFICATION_CHANNEL_ID = "music"

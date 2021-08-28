@@ -3,6 +3,7 @@ package com.example.englishmusic.di
 import android.content.Context
 import com.example.englishmusic.adapters.AlbumAdapter
 import com.example.englishmusic.adapters.ArtistAdapter
+import com.example.englishmusic.adapters.SearchAdapter
 import com.example.englishmusic.adapters.SongAdapter
 import com.example.englishmusic.exoPlayer.MusicServiceConnection
 import com.example.englishmusic.repository.MusicRepository
@@ -38,6 +39,10 @@ object AppModule {
     @Singleton
     @Provides
     fun providesSongAdapter() = SongAdapter()
+
+    @Singleton
+    @Provides
+    fun providesSearchAdapter() = SearchAdapter()
 
 
 

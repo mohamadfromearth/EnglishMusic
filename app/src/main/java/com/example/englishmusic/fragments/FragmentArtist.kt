@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.englishmusic.R
-import com.example.englishmusic.MusicInfoViewModel
+import com.example.englishmusic.viewmodel.MusicInfoViewModel
 import com.example.englishmusic.adapters.ArtistAdapter
 import com.example.englishmusic.databinding.FragmentArtistBinding
 import com.example.englishmusic.other.Status
@@ -19,7 +19,7 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
 
     private var binding:FragmentArtistBinding? = null
 
-    private lateinit var viewModel:MusicInfoViewModel
+    private lateinit var viewModel: MusicInfoViewModel
 
 
      lateinit var artistAdapter: ArtistAdapter
@@ -40,14 +40,19 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
 
               when(response.status){
 
-                  Status.SUCCESS ->{
+                  Status.LOADING ->{
+                      binding!!.loading.visibility = View.VISIBLE
+                  }
+
+                 Status.SUCCESS ->{
+                     binding!!.loading.visibility = View.GONE
 
                       response.data?.let {
                           artistAdapter.differ.submitList(it)
                       }
                   }
 
-                  Status.ERROR ->{
+                Status.ERROR ->{
 
                   }
               }

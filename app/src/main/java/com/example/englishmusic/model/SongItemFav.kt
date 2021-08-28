@@ -1,14 +1,13 @@
 package com.example.englishmusic.model
 
-
-
-data class SongItem(
+data class SongItemFav(
     val __v: Int,
-    val _id: String,
+    val songId: String,
     val album: String,
     val artist: String,
     val cover: String,
     val duration: Int?,
     val name: String,
     val songUrl: String
+
 )

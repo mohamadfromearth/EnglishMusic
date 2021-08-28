@@ -3,4 +3,5 @@
      <dimen name="cardMargin">20dp</dimen>
     <string name="eminem">Eminem</string>
     <dimen name="marginStart">16dp</dimen>
+    <dimen name="marginTop">16dp</dimen>
 </resources>
