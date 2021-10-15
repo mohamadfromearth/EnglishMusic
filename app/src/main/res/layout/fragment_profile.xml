@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <ImageView
+        android:id="@+id/myArtistImg"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:padding="24dp"
+        android:layout_marginEnd="1500px"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_input"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_microphone"
+        />
+
+    <ImageView
+        android:id="@+id/myMusicImg"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="1500px"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_input"
+        android:padding="24dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_romantic_music__1_" />
+
+
+    <ImageView
+        android:id="@+id/myAlbumImg"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="1500px"
+        android:background="@drawable/custom_input"
+        android:padding="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/myArtistImg"
+        app:srcCompat="@drawable/ic_music_album" />
+
+    <ImageView
+        android:id="@+id/myDownloadImg"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="1500px"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_input"
+        android:padding="24dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@+id/myMusicImg"
+        app:srcCompat="@drawable/ic_download" />
+
+    <ImageView
+        android:id="@+id/logOutImg"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="1500px"
+        android:background="@drawable/custom_input"
+        android:padding="24dp"
+        app:srcCompat="@drawable/ic_logout"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/myAlbumImg" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

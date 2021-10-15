@@ -3,6 +3,7 @@ package com.example.englishmusic.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,10 @@ import com.example.englishmusic.model.AlbumItem
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 
-class AlbumAdapter:RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
+class AlbumAdapter(
+    private val layout:Int,
+    private val status:Int,
+):RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
 
     inner class AlbumViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
@@ -23,7 +27,7 @@ class AlbumAdapter:RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
         }
 
         override fun areContentsTheSame(oldItem: AlbumItem, newItem: AlbumItem): Boolean {
-            return oldItem.hashCode() == oldItem.hashCode()
+            return oldItem._id == oldItem._id
         }
 
     }
@@ -33,7 +37,7 @@ class AlbumAdapter:RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         return AlbumViewHolder(LayoutInflater.from(parent.context).inflate(
-            R.layout.item_album,parent,false
+            layout,parent,false
         ))
     }
 
@@ -42,12 +46,14 @@ class AlbumAdapter:RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
         val album = differ.currentList[position]
         holder.itemView.apply {
-            val albumImg = findViewById<ShapeableImageView>(R.id.albumImg)
+            val albumImg = findViewById<ImageView>(R.id.albumImg)
             val nameOfTheAlbum = findViewById<MaterialTextView>(R.id.nameOfAlbum)
             val timeOfTheReleased = findViewById<MaterialTextView>(R.id.timeOfTheReleased)
 
             nameOfTheAlbum.text = album.name
-            timeOfTheReleased.text = album.released
+            if (layout == R.layout.item_album){
+                timeOfTheReleased.text = album.released
+            }
             Glide.with(this).load(album.imageUrl).into(albumImg)
 
             setOnClickListener {
@@ -68,7 +74,11 @@ class AlbumAdapter:RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
 
     override fun getItemCount(): Int {
-       return differ.currentList.size
+        if (status==0){
+            return differ.currentList.size
+        }
+
+       return 10
     }
 
 }

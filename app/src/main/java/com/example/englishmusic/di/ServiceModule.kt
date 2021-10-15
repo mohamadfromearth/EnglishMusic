@@ -2,6 +2,7 @@ package com.example.englishmusic.di
 
 import android.content.Context
 import com.example.englishmusic.api.MusicDataBase
+import com.example.englishmusic.model.Song
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -22,6 +23,11 @@ object ServiceModule {
 @ServiceScoped
 @Provides
 fun provideMusicDataBase() = MusicDataBase()
+
+
+    @ServiceScoped
+    @Provides
+    fun provideSong() = Song()
 
 
     @ServiceScoped

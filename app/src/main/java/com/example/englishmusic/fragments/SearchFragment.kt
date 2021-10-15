@@ -13,6 +13,8 @@ import com.example.englishmusic.R
 import com.example.englishmusic.adapters.SearchAdapter
 import com.example.englishmusic.databinding.FragmentSearchBinding
 import com.example.englishmusic.model.Constance.Companion.SEARCH_MUSIC_DELAY
+import com.example.englishmusic.model.SerializableSong
+import com.example.englishmusic.model.SongItem
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MainViewModel
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
@@ -47,34 +49,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         searchAdapter.setOnItemClickListener {
             when(it.status){
                  "song" -> {
-                     val bundle = Bundle().apply {
-                         putString("searchSong",it.name)
-                     }
 
-                     mainViewModel.addCustomAction(bundle,"searchFragment")
-
-
-
-                     CoroutineScope(Dispatchers.Main).launch {
-                         delay(500)
-                         mainViewModel.mediaItem.observe(viewLifecycleOwner, Observer { respnse ->
-
-                             when(respnse.status){
-                                 Status.SUCCESS ->{
-                                     respnse.data?.let { songItem ->
-
-
-
-                                         mainViewModel.playOrToggleSong(songItem[0])
-                                         findNavController().navigate(R.id.action_searchFragment_to_songPlayingFragment)
-
-
-                                     }
-                                 }
-                             }
-
-                         })
-                     }
+                     val bundle = Bundle()
+                     val song = ArrayList<SongItem>()
+                     song.add(
+                         SongItem(0,it._id,"",it.artist,it.imgUrl
+                     ,it.duration,it.name,it.url,"")
+                     )
+                     bundle.putSerializable("song", SerializableSong(song))
+                     mainViewModel.addCustomAction(bundle,"song")
+                     mainViewModel.playOrToggleSong(song[0])
+                     findNavController().navigate(R.id.action_searchFragment_to_songPlayingFragment)
 
 
 
@@ -82,20 +67,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-                }
+                 }
                 "artist" -> {
                     val bundle = Bundle().apply {
                         putString("artist",it.name)
+                        putString("imageUrl",it.imgUrl)
+                        putString("id",it._id)
                     }
                     findNavController().navigate(R.id.action_searchFragment_to_albumFragment,bundle)
                 }

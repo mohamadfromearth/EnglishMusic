@@ -4,6 +4,8 @@ package com.example.englishmusic.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.englishmusic.api.FollowedId
+import com.example.englishmusic.db.RecentlySongDao
 import com.example.englishmusic.model.*
 import com.example.englishmusic.other.Resource
 import com.example.englishmusic.other.Status
@@ -16,20 +18,58 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MusicInfoViewModel @Inject constructor(
-    private val musicRepository: MusicRepository
+    private val musicRepository: MusicRepository,
+    private val recentlySongDao: RecentlySongDao
 ) : ViewModel() {
 
  val Singer = MutableLiveData<Resource<Artist>>()
+
+    val myArtists = MutableLiveData<Resource<Artist>>()
 
  val albums = MutableLiveData<Resource<Album>>()
 
  val search = MutableLiveData<Resource<Search>>()
 
 
+  val topSongs = MutableLiveData<Resource<Song>>()
+
+    val playlistsSong = MutableLiveData<Resource<Song>>()
+
+
+    val playlist = MutableLiveData<Resource<Playlist>>()
+
+    val myAlbums = MutableLiveData<Resource<Album>>()
+
+    val isAlbumFavorite = MutableLiveData<Resource<IsFavorite>>()
+
+    val shouldUpdateMyArtist = MutableLiveData<Boolean>()
+
+
  val login = MutableLiveData<Resource<Message>>()
 
 
  val isFavorite = MutableLiveData<Resource<IsFavorite>>()
+
+    val isFollowed = MutableLiveData<Resource<IsFavorite>>()
+
+   val songs = MutableLiveData<Resource<Song>>()
+
+   val downloadedSongs = MutableLiveData<List<DownloadSong>>()
+
+    val newSongs = MutableLiveData<Resource<Song>>()
+
+
+    val favorites = MutableLiveData<Resource<Song>>()
+
+
+    val artistInfo = MutableLiveData<Resource<ArtistInfo>>()
+
+
+
+
+    fun shouldUpdateMyArtist(value:Boolean){
+        shouldUpdateMyArtist.value = value
+    }
 
 
     fun getArtist() = viewModelScope.launch{
@@ -47,9 +87,32 @@ class MusicInfoViewModel @Inject constructor(
 
 
     }
+    fun getMyArtists(token:String) = viewModelScope.launch {
+        myArtists.postValue(Resource(Status.LOADING,null,""))
 
+        try {
+            val response = musicRepository.getMyArtists(token)
+          myArtists.postValue(handleResponse(response))
 
-   fun getAlbum(artist:String) = viewModelScope.launch {
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> myArtists.postValue(Resource.error("Network failure",null))
+            }
+        }
+    }
+    fun checkIsFollowed(token:String,followedId: FollowedId) = viewModelScope.launch {
+        isFollowed.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.isFollowed(token,followedId)
+            isFollowed.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> isFollowed.postValue(Resource(Status.ERROR,null,""))
+            }
+
+        }
+    }
+    fun getAlbum(artist:String) = viewModelScope.launch {
        albums.postValue(Resource(Status.LOADING,null,""))
        try{
            val response = musicRepository.getAlbum(artist)
@@ -62,8 +125,96 @@ class MusicInfoViewModel @Inject constructor(
 
 
    }
+    fun getMyAlbum(token:String) = viewModelScope.launch {
+       myAlbums.postValue(Resource.loading(null))
+        try {
+            val response = musicRepository.getMyAlbum(token)
+            myAlbums.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> myAlbums.postValue(Resource.error("Netwoek failure",null))
+            }
+        }
+    }
+    fun checkIsAlbumFavorite(token: String,favoriteId: FavoriteId) = viewModelScope.launch {
+        isAlbumFavorite.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.isAlbumFavorite(token,favoriteId)
+            isAlbumFavorite.postValue(handleResponse(response))
+        }catch (t:Throwable){
 
-  fun getSearch(searchQuery:String) = viewModelScope.launch {
+        }
+    }
+    fun getSong(album:String) = viewModelScope.launch {
+       songs.postValue(Resource(Status.LOADING,null,""))
+       try {
+           val response = musicRepository.getSongs(album)
+           songs.postValue(handleResponse(response))
+       }catch (t:Throwable){
+           when(t){
+             is IOException -> songs.postValue(Resource.error("Network failure",null))
+           }
+       }
+
+   }
+    fun getTopSongs(artist:String) = viewModelScope.launch {
+        topSongs.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.getTopSongs(artist)
+            topSongs.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> topSongs.postValue(Resource(Status.ERROR,null,""))
+            }
+        }
+    }
+    fun getPlaylistSong(token:String,playlist:String) = viewModelScope.launch {
+        playlistsSong.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.getSongByPlaylists(token,playlist)
+            playlistsSong.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> playlistsSong.postValue(Resource(Status.ERROR,null,"Network failure"))
+            }
+        }
+
+    }
+    fun getNewSong() = viewModelScope.launch {
+        newSongs.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.getNewSongs()
+            newSongs.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> newSongs.postValue(Resource(Status.ERROR,null,""))
+            }
+
+        }
+    }
+    fun getPlayLists() = viewModelScope.launch {
+        playlist.postValue(Resource.loading(null))
+        try {
+            val response = musicRepository.getPlayLists()
+            playlist.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> playlist.postValue(Resource.error("",null))
+            }
+        }
+    }
+    fun getFavorites(token:String) = viewModelScope.launch {
+        favorites.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.getFavorites(token)
+            favorites.postValue(handleResponse(response))
+        }catch (t:Throwable){
+             when(t){
+                 is IOException -> favorites.postValue(Resource.error("Network failure",null))
+             }
+        }
+    }
+    fun getSearch(searchQuery:String) = viewModelScope.launch {
       search.postValue(Resource(Status.LOADING,null,""))
       try{
           val response = musicRepository.getSearch(searchQuery)
@@ -76,8 +227,6 @@ class MusicInfoViewModel @Inject constructor(
 
 
   }
-
-
     fun loginUser(username:Username) = viewModelScope.launch {
         login.postValue(Resource(Status.LOADING,null,""))
         try {
@@ -91,7 +240,6 @@ class MusicInfoViewModel @Inject constructor(
             }
         }
     }
-
     fun checkIsFavorite(token:String,favoriteId:FavoriteId) = viewModelScope.launch {
         isFavorite.postValue(Resource(Status.LOADING,null,""))
         try{
@@ -103,6 +251,25 @@ class MusicInfoViewModel @Inject constructor(
             }
         }
     }
+    fun getArtistInfo(id:String) = viewModelScope.launch {
+        artistInfo.postValue(Resource(Status.LOADING,null,""))
+        try{
+            val response =  musicRepository.getArtistsInfo(id)
+            artistInfo.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> artistInfo.postValue(Resource(Status.ERROR,null,"Network failure"))
+            }
+        }
+    }
+
+   fun getRecentlySong() =
+       recentlySongDao.getAllRecentlySongs(10)
+
+
+   fun upsertRecentlyPlayedSong(song:SongItem) = viewModelScope.launch {
+       recentlySongDao.upsert(song)
+   }
 
 
 
@@ -116,8 +283,7 @@ class MusicInfoViewModel @Inject constructor(
      return Resource.error(response.message(),null)
 
     }
-
-   private fun handleGetAlbum(response:Response<Album>):Resource<Album>{
+    private fun handleGetAlbum(response:Response<Album>):Resource<Album>{
        if (response.isSuccessful){
            response.body()?.let { resultResponse ->
                return Resource.success(resultResponse,null)
@@ -126,8 +292,15 @@ class MusicInfoViewModel @Inject constructor(
        }
        return Resource.error(response.message(),null)
    }
+    private fun<T> handleResponse(response:Response<T>):Resource<T>{
+        if (response.isSuccessful){
+            response.body()?.let { resultResponse ->
+                return Resource.success(resultResponse,null)
 
-
+            }
+        }
+        return Resource.error(response.message(),null)
+    }
     private fun handleGetSearch(response:Response<Search>):Resource<Search>{
         if (response.isSuccessful){
             response.body()?.let {  resultResponse ->
@@ -136,8 +309,6 @@ class MusicInfoViewModel @Inject constructor(
         }
         return Resource.error(response.message(),null)
     }
-
-
     private fun handleLoginUser(response:Response<Message>,message:String):Resource<Message>{
         if (response.isSuccessful){
             response.body()?.let { resultResponse ->
@@ -147,8 +318,6 @@ class MusicInfoViewModel @Inject constructor(
         }
         return Resource.error(response.message(),null)
     }
-
-
     private fun handleIsFavorite(response:Response<IsFavorite>):Resource<IsFavorite>{
      if (response.isSuccessful){
          response.body()?.let { resultResponse ->

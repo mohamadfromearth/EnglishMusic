@@ -1,5 +1,6 @@
 package com.example.englishmusic.viewmodel
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
@@ -30,7 +31,7 @@ class MainViewModel @Inject constructor(
      val mediaItem = MutableLiveData<Resource<List<SongItem>>>()
    // val mediaItem: LiveData<Resource<List<SongItem>>> = _mediaItem
 
-
+    val songBitmap = MutableLiveData<Bitmap>()
 
     val isConnected = musicServiceConnection.isConnected
     val networkError = musicServiceConnection.networkError
@@ -38,6 +39,8 @@ class MainViewModel @Inject constructor(
     val playbackState = musicServiceConnection.playbackState
 
     val actionStatus = musicServiceConnection.actionStatus
+
+
 
 
 
@@ -62,7 +65,8 @@ class MainViewModel @Inject constructor(
                         it.description.iconUri.toString(),
                         it.description.extras?.getLong(METADATA_KEY_DURATION)?.toInt(),
                         it.description.title.toString(),
-                        it.description.mediaUri.toString()
+                        it.description.mediaUri.toString(),
+                        ""
                     )
 
                 }
@@ -105,6 +109,10 @@ fun playFromUrl(uri: Uri){
         musicServiceConnection.transportControls.seekTo(pos)
     }
 
+    fun playFromPath(uri: Uri){
+        musicServiceConnection.transportControls.playFromUri(uri,null)
+    }
+
     fun playOrToggleSong(mediaItem: SongItem, toggle: Boolean = false){
         val isPrepared = playbackState.value?.isPrepared ?: false
         if(isPrepared && mediaItem._id ==
@@ -121,9 +129,12 @@ fun playFromUrl(uri: Uri){
         }
     }
 
-override fun onCleared() {
+
+
+
+    override fun onCleared() {
     super.onCleared()
-    musicServiceConnection.unsubscribe(MEDIA_ROOT_ID, object : MediaBrowserCompat.SubscriptionCallback(){})
+   // musicServiceConnection.unsubscribe(MEDIA_ROOT_ID, object : MediaBrowserCompat.SubscriptionCallback(){})
 }
 
 

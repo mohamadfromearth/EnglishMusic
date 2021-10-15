@@ -6,3 +6,4 @@ data class ArtistItem(
     val artistImg: String,
     val name: String
 )
+

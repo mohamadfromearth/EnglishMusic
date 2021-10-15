@@ -3,17 +3,17 @@
     >
 
 <item android:id="@+id/fragmentArtist"
-    android:icon="@drawable/ic_baseline_music_note_24"
-    android:title="Artists" />
+    android:icon="@drawable/ic_baseline_home_24"
+    android:title="Home" />
 
 <item android:id="@+id/searchFragment"
     android:title="Search"
     android:icon="@drawable/ic_baseline_search_24"
     />
 
-<item android:id="@+id/favoriteFragment"
-    android:title="Favorite"
-    android:icon="@drawable/ic_baseline_favorite_24"
+<item android:id="@+id/profileFragment"
+    android:title="Library"
+    android:icon="@drawable/ic_book"
     />
 
 

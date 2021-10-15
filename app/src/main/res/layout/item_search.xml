@@ -8,13 +8,26 @@
     android:padding="10dp"
     >
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/searchImg"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchImgCard"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/black"
+        >
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/searchImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
 
     <TextView
         android:id="@+id/status"
@@ -24,7 +37,7 @@
         android:layout_marginTop="16dp"
         android:text="asdjaskdjakdj"
         android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/searchImg"
+        app:layout_constraintStart_toEndOf="@+id/searchImgCard"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,7 +49,7 @@
         android:text="casdadasd"
         android:textSize="12sp"
         android:textColor="@color/subText"
-        app:layout_constraintStart_toEndOf="@+id/searchImg"
+        app:layout_constraintStart_toEndOf="@+id/searchImgCard"
         app:layout_constraintTop_toBottomOf="@+id/status" />
 
 

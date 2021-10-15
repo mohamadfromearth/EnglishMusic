@@ -1,8 +1,12 @@
 package com.example.englishmusic
 
+import android.content.SharedPreferences
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,12 +17,16 @@ import com.bumptech.glide.Glide
 import com.example.englishmusic.databinding.ActivityMainBinding
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.toSong
+import com.example.englishmusic.model.DownloadSongSerializable
 import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.viewmodel.DownloadViewModel
 import com.example.englishmusic.viewmodel.MainViewModel
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -30,9 +38,15 @@ class MainActivity : AppCompatActivity() {
 
  val mainViewModel:MainViewModel by viewModels()
 
+  private val downloadViewModel:DownloadViewModel by viewModels()
+
+
+    @Inject
+    lateinit var sharePref:SharedPreferences
 
 
 
+ private var songBitmap:Bitmap?=null
 
 
 private var curPlayingSong:SongItem? = null
@@ -47,6 +61,68 @@ private var curPlayingSong:SongItem? = null
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val nav = findNavController(R.id.musicNavHostFragment)
+        binding.buttonNavigation.setupWithNavController(nav)
+
+
+
+        val bundle = intent.extras
+        if (bundle != null ){
+            val notif = bundle.getString("fromNotification").toString()
+            if(notif == "fromNotification"){
+                findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragment)
+            }
+
+        }
+
+        postObserversValue()
+        subscribeToObservers()
+        // navigateToSongPlaying()
+
+        findNavController(R.id.musicNavHostFragment).addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.songPlayingFragment -> {
+                    hideBottomBar()
+                    binding.buttonNavigation.visibility = View.GONE
+                }
+                R.id.songPlayingFragmentForDownloads ->{
+                    hideBottomBar()
+                    binding.buttonNavigation.visibility = View.GONE
+                }
+
+
+
+                else  -> {
+                    binding.buttonNavigation.visibility = View.VISIBLE
+                    if (curPlayingSong!= null) showBottomBar()
+                    if (curPlayingSong == null) hideBottomBar()
+                }
+            }
+        }
+
+
+        binding.playPauseBottom.setOnClickListener {
+            curPlayingSong?.let {
+                mainViewModel.playOrToggleSong(it,true)
+            }
+
+        }
+
+        binding.bottomPlayer.setOnClickListener {
+            curPlayingSong?.let {
+
+
+                if (it.artist == ""){
+
+                    findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragmentForDownload)
+                }else{
+
+                    findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragment)
+                }
+
+            }
+        }
+
 
 
 
@@ -67,74 +143,16 @@ private var curPlayingSong:SongItem? = null
 
     override fun onResume() {
         super.onResume()
-        val nav = findNavController(R.id.musicNavHostFragment)
-        binding.buttonNavigation.setupWithNavController(nav)
-
-        findNavController(R.id.musicNavHostFragment).addOnDestinationChangedListener { _, destination, _ ->
-            when(destination.id) {
-                R.id.songPlayingFragment -> hideBottomBar()
-                R.id.songFragment -> showBottomBar()
-                else  -> {
-                    if (curPlayingSong!= null) showBottomBar()
-                    if (curPlayingSong == null) hideBottomBar()
-                }
-            }
-        }
-
-        val bundle = intent.extras
-        if (bundle != null ){
-            val notif = bundle.getString("fromNotification").toString()
-            if(notif == "fromNotification"){
-                findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragment)
-            }
-
-        }
-        subscribeToObservers()
-        // navigateToSongPlaying()
-
-        findNavController(R.id.musicNavHostFragment).addOnDestinationChangedListener { _, destination, _ ->
-            when(destination.id) {
-                R.id.songPlayingFragment -> hideBottomBar()
-                R.id.songFragment -> showBottomBar()
-                else  -> {
-                    if (curPlayingSong!= null) showBottomBar()
-                    if (curPlayingSong == null) hideBottomBar()
-                }
-            }
-        }
-
-
-        binding.playPauseBottom.setOnClickListener {
-            curPlayingSong?.let {
-                mainViewModel.playOrToggleSong(it,true)
-            }
-
-        }
-
-        binding.bottomPlayer.setOnClickListener {
-            curPlayingSong?.let {
-                findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragment)
-            }
-        }
 
 
     }
 
 
       private fun subscribeToObservers(){
-          mainViewModel.mediaItem.observe(this, Observer {
-
-          })
 
 
-          mainViewModel.curPlayingSong.observe(this, Observer {
-              it?.let {
-                  binding.bottomArtistName.text = it.description.subtitle
-                  binding.songNameBottom.text = it.description.title
-                  Glide.with(this).load(it.description.iconUri).into(binding.bottomCurSongImg)
-              }
 
-          })
+
 
           mainViewModel.playbackState.observe(this, Observer {
               playbackState = it
@@ -149,17 +167,17 @@ private var curPlayingSong:SongItem? = null
               curPlayingSong = it?.toSong()
 
              it?.let {
+                 songBitmap = it.getBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON)
+                 if (songBitmap != null){
 
-
-
-                 Glide.with(this).load(it.description?.iconUri).into(binding.bottomCurSongImg)
+                     Glide.with(this).load(songBitmap).into(binding.bottomCurSongImg)
+                 }else{
+                     Glide.with(this).load(it.description?.iconUri).into(binding.bottomCurSongImg)
+                 }
                  binding.songNameBottom.text = it.description.title
                  binding.bottomArtistName.text = it.description.subtitle
 
              }
-
-
-
           })
 
       }
@@ -175,7 +193,11 @@ private var curPlayingSong:SongItem? = null
 
 
 
-
+    private fun postObserversValue(){
+        val token = sharePref.getString("token","token").toString()
+        musicInfoViewModel.getMyArtists(token)
+        musicInfoViewModel.getPlayLists()
+    }
 
 
 

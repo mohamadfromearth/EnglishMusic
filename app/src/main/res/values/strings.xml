@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">EnglishMusic</string>
-     <dimen name="cardMargin">20dp</dimen>
+    <dimen name="cardMargin">20dp</dimen>
     <string name="eminem">Eminem</string>
     <dimen name="marginStart">16dp</dimen>
     <dimen name="marginTop">16dp</dimen>
+    <string name="exo_download_notification_channel_name">exo_download_notification_channel_name</string>
 </resources>

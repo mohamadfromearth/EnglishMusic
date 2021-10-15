@@ -3,8 +3,11 @@ package com.example.englishmusic.api
 import com.example.englishmusic.model.Search
 import com.example.englishmusic.model.Song
 import java.lang.Exception
+import javax.inject.Inject
 
-class MusicDataBase {
+class MusicDataBase @Inject constructor(
+
+) {
 
     suspend fun getAllSong(album:String): Song? {
 

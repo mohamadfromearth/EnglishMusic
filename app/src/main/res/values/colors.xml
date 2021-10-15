@@ -5,14 +5,18 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#282828</color>
     <color name="lightBlack">#100F0F</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="subText">#E6DBDB</color>
-    <color name="textColorLight">#FF03DAC5</color>
-    <color name="login">#BC5237</color>
+    <color name="white">#93BAA6</color>
+    <color name="subText">#61726A</color>
+    <color name="textColorLight">#93BAA6</color>
+    <color name="colorForBtn">#499C54</color>
+    <color name="login">#499C54</color>
     <color name="myDarkColor">#26052C</color>
     <color name="green">#8BC34A</color>
     <color name="yellow">#FFEB3B</color>
+    <color name="bottomNav">#3C3F41</color>
+    <color name="iconColor">#AFB1B3</color>
+    <color name="bottomPlayerColor">#313335</color>
 
 </resources>

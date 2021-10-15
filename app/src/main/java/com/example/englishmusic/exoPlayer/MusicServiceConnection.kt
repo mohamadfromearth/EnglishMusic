@@ -10,15 +10,26 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.englishmusic.api.RetrofitInstance
+import com.example.englishmusic.db.RecentlySongDao
+import com.example.englishmusic.db.RecentlySongDataBase
 import com.example.englishmusic.model.Constance.Companion.NETWORK_ERROR
+import com.example.englishmusic.model.Id
 import com.example.englishmusic.other.Event
 import com.example.englishmusic.other.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
+import javax.inject.Inject
 import kotlin.math.log
 
-class MusicServiceConnection(
-    context:Context
-
-    ) {
+class MusicServiceConnection @Inject constructor(
+    context:Context,
+     val db:RecentlySongDao
+)
+     {
     private val _isConnected = MutableLiveData<Event<Resource<Boolean>>>()
     val isConnected: LiveData<Event<Resource<Boolean>>> = _isConnected
 
@@ -125,6 +136,16 @@ class MusicServiceConnection(
         override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
 
             curPlayingSong.postValue(metadata)
+            CoroutineScope(Dispatchers.Main).launch {
+                try{
+                    RetrofitInstance.api.increaseViewAndPlay(Id(metadata!!.description.mediaId.toString()))
+                    metadata.toSong()?.let { db.upsert(it) }
+                }catch (t:Throwable){
+
+                }
+
+            }
+
         }
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {

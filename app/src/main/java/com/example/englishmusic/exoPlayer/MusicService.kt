@@ -1,19 +1,31 @@
 package com.example.englishmusic.exoPlayer
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.example.englishmusic.exoPlayer.callback.MusicPlaybackPreparer
 import com.example.englishmusic.exoPlayer.callback.MusicPlayerEventListener
 import com.example.englishmusic.exoPlayer.callback.MusicPlayerNotificationListener
 import com.example.englishmusic.model.Constance.Companion.MEDIA_ROOT_ID
 import com.example.englishmusic.model.Constance.Companion.NETWORK_ERROR
+import com.example.englishmusic.model.Constance.Companion.NOTIFICATION_CHANNEL_ID
+import com.example.englishmusic.model.SerializableDownloadSong
+import com.example.englishmusic.model.SerializableSong
+import com.example.englishmusic.model.Song
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -24,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.lang.IllegalStateException
 import javax.inject.Inject
+import kotlin.math.log
 
 private const val SERVICE_TAG = "Music service"
 private const val TAG = "debugbazi"
@@ -45,8 +58,6 @@ class MusicService:MediaBrowserServiceCompat() {
 
     private lateinit var musicNotificationManager: MusicNotificationManager
 
-    private val serviceJob = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
 
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
@@ -73,6 +84,7 @@ class MusicService:MediaBrowserServiceCompat() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
@@ -101,16 +113,24 @@ class MusicService:MediaBrowserServiceCompat() {
 
         sessionToken = mediaSession.sessionToken
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val chan = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                "chanelName", NotificationManager.IMPORTANCE_NONE)
+
+            val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            service.createNotificationChannel(chan)
+        }
+
+
 
 
         musicNotificationManager = MusicNotificationManager(
             this,
             mediaSession.sessionToken,
-            MusicPlayerNotificationListener(this)
-        ) {
-            if(exoPlayer.duration != C.TIME_UNSET){
-                curSongDuration = exoPlayer.duration
-            }
+            MusicPlayerNotificationListener(this),
+            NOTIFICATION_CHANNEL_ID
+        ){
 
         }
 
@@ -138,31 +158,35 @@ class MusicService:MediaBrowserServiceCompat() {
 
     override fun onCustomAction(action: String, extras: Bundle?, result: Result<Bundle>) {
         super.onCustomAction(action, extras, result)
-        if (action == "songFragment"){
-            Log.d(TAG,extras?.getString("searchSong").toString() )
-            serviceScope.launch {
-                firebaseMusicSource.fetchMediaData(extras?.getString("album").toString())
-            }
-            notifyChildrenChanged(MEDIA_ROOT_ID)
-           // notifyChildrenChanged(MEDIA_ROOT_ID)
-        }
+
         if (action == "searchFragment"){
-            Log.d(TAG,extras?.getString("searchSong").toString() )
-            serviceScope.launch {
-                firebaseMusicSource.fetchMediaDataFromSearch(extras?.getString("searchSong").toString())
-
-            }
+            val serial = extras?.getSerializable("song")
+            val song = serial as SerializableSong?
+            firebaseMusicSource.fetchMediaDataFromSearch(song!!)
             notifyChildrenChanged(MEDIA_ROOT_ID)
         }
-
         if(action == "favorite"){
+            val serial = extras?.getSerializable("song")
+            val song = serial as SerializableSong?
 
-            serviceScope.launch {
-                firebaseMusicSource.fetchFavoriteMetaData(extras?.getString("token").toString())
-            }
+                firebaseMusicSource.fetchFavoriteMetaData(song!!)
+
             notifyChildrenChanged(MEDIA_ROOT_ID)
 
         }
+        if (action == "song"){
+           val serial = extras?.getSerializable("song")
+            val song = serial as SerializableSong?
+           // Log.d("song", song!!.song[1].name)
+            firebaseMusicSource.fetchMetaDataUi(song!!)
+
+        }
+       if(action == "songDownload"){
+           val serial = extras?.getSerializable("song")
+           val song = serial as SerializableDownloadSong
+           firebaseMusicSource.fetchDownloadMedia(song)
+
+       }
 
     }
 
@@ -186,12 +210,12 @@ class MusicService:MediaBrowserServiceCompat() {
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        exoPlayer.stop()
+       // exoPlayer.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        serviceScope.cancel()
+
 
         exoPlayer.removeListener(musicPlayerEventListener)
         exoPlayer.release()

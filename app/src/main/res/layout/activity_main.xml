@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNavigation"
+        app:layout_constraintBottom_toTopOf="@+id/bottomPlayer"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/music_navigation"
         tools:layout_editor_absoluteX="0dp" />
@@ -24,19 +24,32 @@
         android:id="@+id/bottomPlayer"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/myDarkColor"
+        android:background="@color/bottomPlayerColor"
         app:layout_constraintBottom_toTopOf="@+id/buttonNavigation"
         tools:layout_editor_absoluteX="-16dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bottomCurSongImg"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bottomCurSongImgCard"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/bottomPlayerColor"
+            >
+            <ImageView
+                android:id="@+id/bottomCurSongImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                />
+        </androidx.cardview.widget.CardView>
+
+
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/songNameBottom"
@@ -46,7 +59,7 @@
             android:layout_marginTop="4dp"
             android:text="askjdaskjdask"
             android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImg"
+            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImgCard"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -60,7 +73,7 @@
             android:textColor="@color/subText"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImg"
+            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImgCard"
             app:layout_constraintTop_toBottomOf="@+id/songNameBottom"
             app:layout_constraintVertical_bias="0.0" />
 
@@ -80,7 +93,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/buttonNavigation"
-        android:background="@color/black"
+        android:background="@color/bottomNav"
         app:itemRippleColor="@color/white"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"

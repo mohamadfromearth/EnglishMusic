@@ -10,6 +10,17 @@ class Constance {
 
         const val UPDATE_PLAYER_POSITION_INTERVAL = 100L
 
+        const val DOWNLOAD_NOTIFICATION_CHANNEL_ID="DOWNLOAD_NOTIFICATION_CHANNEL_ID"
+
+
+        const val DATA_BASE_NAME = "recently_db"
+
+
+        const val IS_LOGIN = "isLogin"
+        const val LOGIN_SHARE_PREF = "login"
+        const val USERNAME_KEY = "USERNAME_KEY"
+
+        const val IS_ARTIST_SELECTED = "IS_ARTIST_SELECTED"
 
         const val SEARCH_MUSIC_DELAY = 500L
 

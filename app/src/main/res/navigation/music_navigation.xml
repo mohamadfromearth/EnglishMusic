@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/music_navigation"
     app:startDestination="@id/fragmentArtist">
 
@@ -15,6 +16,22 @@
             app:exitAnim="@anim/slide_in_out"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/slide_in_out" />
+        <action
+            android:id="@+id/action_fragmentArtist_to_playlistSongFragment"
+            app:destination="@id/playlistSongFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+        <action
+            android:id="@+id/action_fragmentArtist_to_myArtistsFragment"
+            app:destination="@id/myArtistsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -38,18 +55,6 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/favoriteFragment"
-        android:name="com.example.englishmusic.fragments.FavoriteFragment"
-        android:label="FavoriteFragment" >
-        <action
-            android:id="@+id/action_favoriteFragment_to_songPlayingFragment"
-            app:destination="@id/songPlayingFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_in_out"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/slide_in_out" />
-    </fragment>
-    <fragment
         android:id="@+id/albumFragment"
         android:name="com.example.englishmusic.fragments.AlbumFragment"
         android:label="AlbumFragment" >
@@ -61,6 +66,20 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/slide_in_out"
             />
+        <action
+            android:id="@+id/action_albumFragment_to_allAlbumsFragment"
+            app:destination="@id/allAlbumsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+        <action
+            android:id="@+id/action_albumFragment_to_allTopSongsFragment"
+            app:destination="@id/allTopSongsFragment" />
+        <action
+            android:id="@+id/action_albumFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment" />
     </fragment>
     <fragment
         android:id="@+id/songFragment"
@@ -83,9 +102,152 @@
     <action
         android:id="@+id/GlobalActionToSongPlayingFragment"
         app:destination="@+id/songPlayingFragment"
-        app:enterAnim="@anim/slide_in_left"
-        app:exitAnim="@anim/slide_in_out"
+        app:enterAnim="@anim/drawer"
+        app:exitAnim="@anim/drawer_up_to_down"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/slide_in_out" />
+        app:popExitAnim="@anim/drawer_up_to_down" />
+
+    <action
+        android:id="@+id/GlobalActionToSongPlayingFragmentForDownload"
+        app:destination="@+id/songPlayingFragmentForDownloads"
+        app:enterAnim="@anim/drawer"
+        app:exitAnim="@anim/drawer_up_to_down"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/drawer_up_to_down"
+        />
+
+    <fragment
+        android:id="@+id/playlistSongFragment"
+        android:name="com.example.englishmusic.fragments.PlaylistSongFragment"
+        android:label="PlaylistSongFragment" >
+        <action
+            android:id="@+id/action_playlistSongFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.englishmusic.fragments.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_mySongFragment"
+            app:destination="@id/mySongFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_myArtistsFragment"
+            app:destination="@id/myArtistsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_myAlbumsFragment"
+            app:destination="@id/myAlbumsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_downloadFragment"
+            app:destination="@id/downloadFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+
+    </fragment>
+    <fragment
+        android:id="@+id/mySongFragment"
+        android:name="com.example.englishmusic.fragments.MySongFragment"
+        android:label="MySongFragment" >
+        <action
+            android:id="@+id/action_mySongFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/myArtistsFragment"
+        android:name="com.example.englishmusic.fragments.MyArtistsFragment"
+        android:label="MyArtistsFragment" >
+        <action
+            android:id="@+id/action_myArtistsFragment_to_albumFragment"
+            app:destination="@id/albumFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/myAlbumsFragment"
+        android:name="com.example.englishmusic.fragments.MyAlbumsFragment"
+        android:label="MyAlbumsFragment" >
+        <action
+            android:id="@+id/action_myAlbumsFragment_to_songFragment"
+            app:destination="@id/songFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/downloadFragment"
+        android:name="com.example.englishmusic.fragments.DownloadFragment"
+        android:label="DownloadFragment" >
+        <action
+            android:id="@+id/action_downloadFragment_to_songPlayingFragmentForDownloads"
+            app:destination="@id/songPlayingFragmentForDownloads"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/songPlayingFragmentForDownloads"
+        android:name="com.example.englishmusic.fragments.SongPlayingFragmentForDownloads"
+        android:label="SongPlayingFragmentForDownloads" />
+    <fragment
+        android:id="@+id/allAlbumsFragment"
+        android:name="com.example.englishmusic.fragments.AllAlbumsFragment"
+        android:label="AllAlbumsFragment" >
+        <action
+            android:id="@+id/action_allAlbumsFragment_to_songFragment"
+            app:destination="@id/songFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/allTopSongsFragment"
+        android:name="com.example.englishmusic.fragments.AllTopSongsFragment"
+        android:label="AllTopSongsFragment" >
+        <action
+            android:id="@+id/action_allTopSongsFragment_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
+    </fragment>
 
 </navigation>

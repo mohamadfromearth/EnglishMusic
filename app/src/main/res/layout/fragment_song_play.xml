@@ -12,10 +12,11 @@
         android:id="@+id/tvSongName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:maxLines="2"
         android:text="SONG NAME"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="19sp"
         app:layout_constraintBottom_toTopOf="@+id/ivSongImageCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -38,8 +39,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black"
+
             />
     </com.google.android.material.card.MaterialCardView>
+
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -59,8 +62,8 @@
         android:layout_width="0dp"
         android:layout_height="18dp"
         android:progressBackgroundTint="@color/white"
-        android:progressTint="@color/purple_700"
-        android:thumbTint="@color/purple_700"
+        android:progressTint="@color/login"
+        android:thumbTint="@color/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
@@ -128,21 +131,29 @@
         android:id="@+id/songSub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_baseline_subtitles_24"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSkipPrevious"
-        app:layout_constraintEnd_toStartOf="@+id/ivSkipPrevious"
+        android:layout_margin="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ivSkipPrevious" />
+        app:srcCompat="@drawable/ic_baseline_subtitles_24" />
 
     <ImageView
         android:id="@+id/addAndDeleteFavorite"
+        android:layout_margin="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSkip"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivSkip"
-        app:layout_constraintTop_toTopOf="@+id/ivSkip"
         app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+    <ImageView
+        android:id="@+id/download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addAndDeleteFavorite"
+        app:layout_constraintStart_toEndOf="@+id/songSub"
+        app:srcCompat="@drawable/ic_baseline_arrow_downward_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

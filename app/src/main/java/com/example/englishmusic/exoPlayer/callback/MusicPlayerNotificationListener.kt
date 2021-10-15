@@ -1,6 +1,8 @@
 package com.example.englishmusic.exoPlayer.callback
 
 import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.example.englishmusic.exoPlayer.MusicService
@@ -25,6 +27,9 @@ class MusicPlayerNotificationListener(
         ongoing: Boolean
     ) {
         super.onNotificationPosted(notificationId, notification, ongoing)
+
+
+
         musicService.apply {
             if (ongoing && !isForegroundService){
                 ContextCompat.startForegroundService(this,
@@ -33,6 +38,8 @@ class MusicPlayerNotificationListener(
                 startForeground(notificationId,notification)
                 isForegroundService = true
             }
+
+
         }
     }
 

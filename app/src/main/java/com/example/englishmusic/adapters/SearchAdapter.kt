@@ -26,7 +26,7 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
         }
 
         override fun areContentsTheSame(oldItem: SearchItem, newItem: SearchItem): Boolean {
-            return  oldItem.hashCode() == newItem.hashCode()
+            return  oldItem._id == newItem._id
         }
 
     }

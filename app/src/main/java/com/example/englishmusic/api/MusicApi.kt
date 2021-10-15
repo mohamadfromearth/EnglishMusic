@@ -18,6 +18,18 @@ interface MusicApi {
     @GET("songs/getSongs/{album}")
     suspend fun getSongs(@Path("album")album:String):Response<Song>
 
+
+    @GET("songs/getAllSong")
+    suspend fun getNewSongs():Response<Song>
+
+
+    @GET("songs/getTopSongs/{artist}")
+    suspend fun getTopSongs(@Path("artist")artist:String):Response<Song>
+
+
+    @PUT("songs/increaseViewAndPlay")
+    suspend fun increaseViewAndPlay(@Body id:Id):Response<Boolean>
+
     @GET("songs/getSearch/{search}")
     suspend fun getSearch(@Path("search")search:String):Response<Search>
 
@@ -28,6 +40,8 @@ interface MusicApi {
 
     @POST("songs/loginUser")
     suspend fun loginUser(@Body username: Username):Response<Message>
+
+
 
 
 
@@ -45,11 +59,59 @@ interface MusicApi {
     suspend fun getFavorites(@Header("x-auth-token")token: String):Response<Song>
 
 
+    @GET("songs/getMyAlbums")
+    suspend fun getMyAlbums(@Header("x-auth-token")token:String):Response<Album>
+
+    @POST("songs/addAlbum")
+    suspend fun addAlbum(@Header("x-auth-token")token:String,@Body album:AddAlbum):Response<Message>
+
+    @POST("songs/deleteAlbum")
+    suspend fun deleteAlbum(@Header("x-auth-token")token: String,@Body albumId:AlbumId):Response<Message>
+
+
+    @POST("songs/isAlbumFavorite")
+    suspend fun isAlbumFavorite(@Header("x-auth-token")token:String,@Body favoriteId: FavoriteId):Response<IsFavorite>
+
+
+    @GET("songs/getPlaylists")
+    suspend fun getPlaylists():Response<Playlist>
+
+
     @POST("songs/isFavorite")
     suspend fun isFavorite(@Header("x-auth-token")token:String,@Body favoriteId:FavoriteId):Response<IsFavorite>
 
 
+    @POST("songs/selectArtist")
+    suspend fun selectArtist(@Header("x-auth-token")token:String,@Body artist:AddArtist):Response<Message>
 
+    @POST("songs/unselectArtist")
+    suspend fun unSelectArtist(@Header("x-auth-token")token:String,@Body artistId:ArtistId):Response<Message>
+
+
+    @POST("songs/isFollowed")
+    suspend fun isFollowed(@Header("x-auth-token")token:String,@Body followedId:FollowedId):Response<IsFavorite>
+
+    @GET("songs/getSelectedArtists")
+    suspend fun getMyArtists(@Header("x-auth-token")token:String):Response<Artist>
+
+
+    @GET("songs/getSongByPlayLists/{playList}")
+    suspend fun getSongByPlaylist(
+        @Header("x-auth-token")token:String,
+        @Path("playList")playlist:String):Response<Song>
+
+
+
+    @GET("songs/getArtistInfo/{id}")
+    suspend fun getArtistInfo(@Path("id")id:String):Response<ArtistInfo>
 
 
 }
+
+data class FollowedId(
+    val followId:String
+)
+
+data class AlbumId(
+    val albumId:String
+)
