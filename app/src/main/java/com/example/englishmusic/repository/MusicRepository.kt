@@ -2,11 +2,8 @@ package com.example.englishmusic.repository
 
 import com.example.englishmusic.api.FollowedId
 import com.example.englishmusic.api.RetrofitInstance
-import com.example.englishmusic.db.RecentlySongDataBase
-import com.example.englishmusic.model.FavoriteId
-import com.example.englishmusic.model.IsFavorite
+import com.example.englishmusic.model.favorites.FavoriteId
 import com.example.englishmusic.model.Username
-import javax.inject.Inject
 
 class MusicRepository  {
 
@@ -64,12 +61,16 @@ class MusicRepository  {
         RetrofitInstance.api.isFavorite(token,favoriteId)
 
 
-    suspend fun isAlbumFavorite(token:String,favoriteId:FavoriteId) =
+    suspend fun isAlbumFavorite(token:String,favoriteId: FavoriteId) =
         RetrofitInstance.api.isAlbumFavorite(token,favoriteId)
 
 
     suspend fun getArtistsInfo(id:String) =
         RetrofitInstance.api.getArtistInfo(id)
+
+
+    suspend fun getLyric(id:String) =
+        RetrofitInstance.api.getLyric(id)
 
 
 

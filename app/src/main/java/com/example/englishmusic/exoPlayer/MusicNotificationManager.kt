@@ -1,26 +1,25 @@
 package com.example.englishmusic.exoPlayer
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
+
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
+
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
-import androidx.annotation.RequiresApi
+
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.englishmusic.R
-import com.example.englishmusic.model.Constance.Companion.NOTIFICATION_CHANNEL_ID
+
 import com.example.englishmusic.model.Constance.Companion.NOTIFICATION_ID
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.util.NotificationUtil.createNotificationChannel
+
 
 class MusicNotificationManager(
     private val context:Context,

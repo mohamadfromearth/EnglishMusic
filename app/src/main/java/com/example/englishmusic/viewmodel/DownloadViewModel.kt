@@ -7,7 +7,7 @@ import android.media.MediaMetadataRetriever
 import android.os.Environment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.englishmusic.model.DownloadSong
+import com.example.englishmusic.model.downloads.DownloadSong
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.ByteArrayInputStream
@@ -35,10 +35,12 @@ class DownloadViewModel @Inject constructor(
 
             inputStream = ByteArrayInputStream(mmr.embeddedPicture)
             val bitmap = BitmapFactory.decodeStream(inputStream)
-            song.add(DownloadSong(it.hashCode().toString(),
+            song.add(
+                DownloadSong(it.hashCode().toString(),
                 it.name,
                 it.absolutePath,
-                bitmap))
+                bitmap)
+            )
         }
         downloadedSong.postValue(song)
     }

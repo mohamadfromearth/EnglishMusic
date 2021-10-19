@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.englishmusic.R
-import com.example.englishmusic.model.DownloadSong
+import com.example.englishmusic.model.downloads.DownloadSong
 
 class DownloadAdapter: RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>() {
 

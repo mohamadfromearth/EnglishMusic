@@ -8,152 +8,187 @@
     android:background="@color/black"
     >
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvSongName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:text="SONG NAME"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="19sp"
-        app:layout_constraintBottom_toTopOf="@+id/ivSongImageCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/ivSongImageCard"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardCornerRadius="8dp"
-        >
-
-        <ImageView
-            android:id="@+id/ivSongImage"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black"
+            android:layout_height="match_parent">
 
-            />
-    </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvSongName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="SONG NAME"
+                android:layout_marginTop="32dp"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ivSongImageCard"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="32dp"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvSongName">
+
+                <ImageView
+                    android:id="@+id/ivSongImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+
+                    />
+            </com.google.android.material.card.MaterialCardView>
 
 
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvCurTime"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:gravity="center"
-        android:text="00:00"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvCurTime"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="0dp"
-        android:layout_height="18dp"
-        android:progressBackgroundTint="@color/white"
-        android:progressTint="@color/login"
-        android:thumbTint="@color/login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        app:layout_constraintWidth_percent="0.9" />
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="0dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="32dp"
+                android:progressBackgroundTint="@color/white"
+                android:progressTint="@color/login"
+                android:thumbTint="@color/login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivSongImageCard"
+                app:layout_constraintWidth_percent="0.9" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tvSongDuration"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:gravity="center"
-        android:text="00:00"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvSongDuration"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
-    <ImageView
-        android:id="@+id/ivPlayPauseDetail"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="32dp"
+            <ImageView
+                android:id="@+id/ivPlayPauseDetail"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="28dp"
+                android:src="@drawable/exo_icon_play"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
-        android:src="@drawable/exo_icon_play"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 
-    <ImageView
-        android:id="@+id/ivSkipPrevious"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/exo_controls_previous"
-        app:layout_constraintBottom_toBottomOf="@+id/ivPlayPauseDetail"
-        app:layout_constraintEnd_toStartOf="@+id/ivPlayPauseDetail"
-        app:layout_constraintTop_toTopOf="@+id/ivPlayPauseDetail" />
+            <ImageView
+                android:id="@+id/ivSkipPrevious"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/exo_controls_previous"
+                app:layout_constraintBottom_toBottomOf="@+id/ivPlayPauseDetail"
+                app:layout_constraintEnd_toStartOf="@+id/ivPlayPauseDetail"
+                app:layout_constraintTop_toTopOf="@+id/ivPlayPauseDetail" />
 
-    <ImageView
-        android:id="@+id/ivSkip"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/exo_controls_next"
-        app:layout_constraintBottom_toBottomOf="@+id/ivPlayPauseDetail"
-        app:layout_constraintStart_toEndOf="@+id/ivPlayPauseDetail"
-        app:layout_constraintTop_toTopOf="@+id/ivPlayPauseDetail" />
+            <ImageView
+                android:id="@+id/ivSkip"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/exo_controls_next"
+                app:layout_constraintBottom_toBottomOf="@+id/ivPlayPauseDetail"
+                app:layout_constraintStart_toEndOf="@+id/ivPlayPauseDetail"
+                app:layout_constraintTop_toTopOf="@+id/ivPlayPauseDetail" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.6" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.7" />
 
-    <ImageView
-        android:id="@+id/songSub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_subtitles_24" />
+            <ImageView
+                android:id="@+id/songSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/ivPlayPauseDetail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_baseline_subtitles_24"
+                tools:layout_editor_absoluteY="526dp" />
 
-    <ImageView
-        android:id="@+id/addAndDeleteFavorite"
-        android:layout_margin="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+            <ImageView
+                android:id="@+id/addAndDeleteFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                app:layout_constraintTop_toBottomOf="@id/ivPlayPauseDetail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24"
+                tools:layout_editor_absoluteY="526dp" />
 
-    <ImageView
-        android:id="@+id/download"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addAndDeleteFavorite"
-        app:layout_constraintStart_toEndOf="@+id/songSub"
-        app:srcCompat="@drawable/ic_baseline_arrow_downward_24" />
+            <ImageView
+                android:id="@+id/download"
+                android:layout_width="19dp"
+                android:layout_height="27dp"
+                android:layout_margin="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/ivPlayPauseDetail"
+                app:layout_constraintEnd_toStartOf="@+id/addAndDeleteFavorite"
+                app:layout_constraintStart_toEndOf="@+id/songSub"
+                app:srcCompat="@drawable/ic_baseline_arrow_downward_24" />
+
+
+            <TextView
+                android:id="@+id/enLyric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/download"
+                android:padding="16dp"
+                android:textColor="@color/white"
+                android:text="its good alsdklaskdlskdalskdalsdkas;dka
+asldkaslkdalskdasldkaslkdasldkasldka;ldka;ldskla;dk;ladkla;dklfjdshgjghdjghjhfjkdshfsjdfhsdjfhskjfhskjdhfdsfdsjhfdsfdsfffffsjfkhsdfhsf
+dhsjfhsjfhdsjdfhskjfhskjdhfskjdhfjskdhfsjdfhskjhfdsj"
+                />
+
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

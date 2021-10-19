@@ -6,15 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.englishmusic.adapters.ArtistAdapter
 import com.example.englishmusic.adapters.SelectArtistsAdapter
 import com.example.englishmusic.api.RetrofitInstance
 import com.example.englishmusic.databinding.ActivitySelectArtistBinding
-import com.example.englishmusic.model.AddArtist
-import com.example.englishmusic.model.ArtistId
+import com.example.englishmusic.model.artist.AddArtist
+import com.example.englishmusic.model.artist.ArtistId
 import com.example.englishmusic.model.Constance
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
@@ -91,7 +88,7 @@ class SelectArtistActivity : AppCompatActivity() {
     private fun deleteArtist(artistId:String){
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                RetrofitInstance.api.unSelectArtist(token,ArtistId(artistId))
+                RetrofitInstance.api.unSelectArtist(token, ArtistId(artistId))
             }catch (t:Throwable){
 
             }

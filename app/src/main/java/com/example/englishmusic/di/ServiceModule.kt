@@ -2,7 +2,7 @@ package com.example.englishmusic.di
 
 import android.content.Context
 import com.example.englishmusic.api.MusicDataBase
-import com.example.englishmusic.model.Song
+import com.example.englishmusic.model.song.Song
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -46,6 +46,7 @@ fun providesExoPlayer(
 ) = SimpleExoPlayer.Builder(context).build().apply {
     setAudioAttributes(audioAttributes,true)
     setHandleAudioBecomingNoisy(true)
+
 }
 
 

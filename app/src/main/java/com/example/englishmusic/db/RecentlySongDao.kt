@@ -1,11 +1,12 @@
 package com.example.englishmusic.db
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.song.SongItem
 
 @Dao
 interface RecentlySongDao {
@@ -15,13 +16,13 @@ interface RecentlySongDao {
             OnConflictStrategy.REPLACE
     )
     suspend fun upsert(
-        recentlySong:SongItem
+        recentlySong: SongItem
     ):Long
 
     @Query(
         "SELECT * FROM recentlySong LIMIT:limit"
     )
-    fun getAllRecentlySongs(limit:Int):LiveData<List<SongItem>>
+    fun getAllRecentlySongs(limit:Int): LiveData<List<SongItem>>
 
 
 }

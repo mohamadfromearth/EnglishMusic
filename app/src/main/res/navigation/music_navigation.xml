@@ -32,6 +32,14 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/slide_in_out"
             />
+        <action
+            android:id="@+id/action_fragmentArtist_to_songPlayingFragment"
+            app:destination="@id/songPlayingFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/slide_in_out"
+            />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -56,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/albumFragment"
-        android:name="com.example.englishmusic.fragments.AlbumFragment"
+        android:name="com.example.englishmusic.fragments.albums.AlbumFragment"
         android:label="AlbumFragment" >
         <action
             android:id="@+id/action_albumFragment_to_songFragment"
@@ -83,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/songFragment"
-        android:name="com.example.englishmusic.fragments.SongFragment"
+        android:name="com.example.englishmusic.fragments.songs.SongFragment"
         android:label="SongFragment" >
         <action
             android:id="@+id/action_songFragment_to_songPlayingFragment"
@@ -118,7 +126,7 @@
 
     <fragment
         android:id="@+id/playlistSongFragment"
-        android:name="com.example.englishmusic.fragments.PlaylistSongFragment"
+        android:name="com.example.englishmusic.fragments.songs.PlaylistSongFragment"
         android:label="PlaylistSongFragment" >
         <action
             android:id="@+id/action_playlistSongFragment_to_songPlayingFragment"
@@ -169,7 +177,7 @@
     </fragment>
     <fragment
         android:id="@+id/mySongFragment"
-        android:name="com.example.englishmusic.fragments.MySongFragment"
+        android:name="com.example.englishmusic.fragments.songs.MySongFragment"
         android:label="MySongFragment" >
         <action
             android:id="@+id/action_mySongFragment_to_songPlayingFragment"
@@ -182,7 +190,7 @@
     </fragment>
     <fragment
         android:id="@+id/myArtistsFragment"
-        android:name="com.example.englishmusic.fragments.MyArtistsFragment"
+        android:name="com.example.englishmusic.fragments.artists.MyArtistsFragment"
         android:label="MyArtistsFragment" >
         <action
             android:id="@+id/action_myArtistsFragment_to_albumFragment"
@@ -195,7 +203,7 @@
     </fragment>
     <fragment
         android:id="@+id/myAlbumsFragment"
-        android:name="com.example.englishmusic.fragments.MyAlbumsFragment"
+        android:name="com.example.englishmusic.fragments.albums.MyAlbumsFragment"
         android:label="MyAlbumsFragment" >
         <action
             android:id="@+id/action_myAlbumsFragment_to_songFragment"
@@ -208,7 +216,7 @@
     </fragment>
     <fragment
         android:id="@+id/downloadFragment"
-        android:name="com.example.englishmusic.fragments.DownloadFragment"
+        android:name="com.example.englishmusic.fragments.downloads.DownloadFragment"
         android:label="DownloadFragment" >
         <action
             android:id="@+id/action_downloadFragment_to_songPlayingFragmentForDownloads"
@@ -225,7 +233,7 @@
         android:label="SongPlayingFragmentForDownloads" />
     <fragment
         android:id="@+id/allAlbumsFragment"
-        android:name="com.example.englishmusic.fragments.AllAlbumsFragment"
+        android:name="com.example.englishmusic.fragments.albums.AllAlbumsFragment"
         android:label="AllAlbumsFragment" >
         <action
             android:id="@+id/action_allAlbumsFragment_to_songFragment"
@@ -238,7 +246,7 @@
     </fragment>
     <fragment
         android:id="@+id/allTopSongsFragment"
-        android:name="com.example.englishmusic.fragments.AllTopSongsFragment"
+        android:name="com.example.englishmusic.fragments.songs.AllTopSongsFragment"
         android:label="AllTopSongsFragment" >
         <action
             android:id="@+id/action_allTopSongsFragment_to_songPlayingFragment"

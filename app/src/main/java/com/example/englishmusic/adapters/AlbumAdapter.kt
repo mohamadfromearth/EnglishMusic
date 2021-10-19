@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.englishmusic.R
-import com.example.englishmusic.model.AlbumItem
-import com.google.android.material.imageview.ShapeableImageView
+import com.example.englishmusic.model.albums.AlbumItem
 import com.google.android.material.textview.MaterialTextView
 
 class AlbumAdapter(

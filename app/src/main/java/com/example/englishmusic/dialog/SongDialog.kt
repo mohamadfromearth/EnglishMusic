@@ -2,28 +2,25 @@ package com.example.englishmusic.dialog
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.DialogFragment
 import com.example.englishmusic.R
 import com.example.englishmusic.api.RetrofitInstance
 import com.example.englishmusic.databinding.BottomSheetDialogFragmentBinding
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.model.SongItemFav
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SongDialog(private val songItem:SongItem):BottomSheetDialogFragment(){
+class SongDialog(private val songItem: SongItem):BottomSheetDialogFragment(){
     private lateinit var binding:BottomSheetDialogFragmentBinding
 
     @Inject

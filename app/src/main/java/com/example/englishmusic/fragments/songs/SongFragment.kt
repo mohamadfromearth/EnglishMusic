@@ -1,13 +1,8 @@
-package com.example.englishmusic.fragments
-import android.content.Intent
+package com.example.englishmusic.fragments.songs
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +13,12 @@ import com.example.englishmusic.api.AlbumId
 import com.example.englishmusic.api.RetrofitInstance
 import com.example.englishmusic.databinding.FragmentSongBinding
 import com.example.englishmusic.dialog.SongDialog
-import com.example.englishmusic.exoPlayer.MusicService
+import com.example.englishmusic.fragments.EMPTY_HEART
+import com.example.englishmusic.fragments.FILL_HEART
 import com.example.englishmusic.model.*
+import com.example.englishmusic.model.albums.AddAlbum
+import com.example.englishmusic.model.favorites.FavoriteId
+import com.example.englishmusic.model.song.Song
 import com.example.englishmusic.other.Resource
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MainViewModel
@@ -50,14 +49,10 @@ class SongFragment: Fragment(R.layout.fragment_song) {
         setUpRecyclerView()
         subscribeToObservers()
         binding!!.addDeleteAlbum.setOnClickListener {
-            if (binding!!.addDeleteAlbum.getTag(FILL_HEART) == EMPTY_HEART  ){
-                addAlbum()
-                binding!!.addDeleteAlbum.setImageResource(FILL_HEART)
-                binding!!.addDeleteAlbum.setTag(FILL_HEART, FILL_HEART)
-            }else{
-                deleteAlbum()
-                binding!!.addDeleteAlbum.setImageResource(EMPTY_HEART)
-                binding!!.addDeleteAlbum.setTag(FILL_HEART, EMPTY_HEART)
+
+            when(binding!!.addDeleteAlbum.getTag(FILL_HEART)){
+                EMPTY_HEART -> addAlbum()
+                else -> deleteAlbum()
             }
         }
         songAdapter.setOnOptionClick {
@@ -72,36 +67,26 @@ class SongFragment: Fragment(R.layout.fragment_song) {
         binding!!.songRecyclerView.adapter = songAdapter
     }
     private fun subscribeToObservers(){
-        musicInfoViewModel.songs.observe(viewLifecycleOwner, Observer {  result ->
+        musicInfoViewModel.songs.observe(viewLifecycleOwner,  {  result ->
             when(result.status){
                 Status.LOADING -> {
 
                 }
 
                 Status.SUCCESS ->{
-                    result.data?.let { song ->
-                        songAdapter.differ.submitList(song)
-
-                        songAdapter.setOnItemClick {
-                            bundle.putSerializable("song",SerializableSong(song))
-                            mainViewModel.addCustomAction(bundle,"song")
-                            mainViewModel.playOrToggleSong(it)
-                            val bundle = Bundle()
-                            bundle.putString("songUri",it.songUrl)
-                            findNavController().navigate(R.id.action_songFragment_to_songPlayingFragment,bundle)
-                        }
-
-
-
-
-
-
-                    }
+                   submitSongsToDifferAndSetOnClickForSongAdapter(result)
                 }
+
+                Status.ERROR -> {
+
+                }
+
+                else -> Unit
+
             }
 
         })
-        musicInfoViewModel.isAlbumFavorite.observe(viewLifecycleOwner, Observer { result ->
+        musicInfoViewModel.isAlbumFavorite.observe(viewLifecycleOwner, { result ->
             when(result.status){
                 Status.LOADING->{
 
@@ -109,15 +94,15 @@ class SongFragment: Fragment(R.layout.fragment_song) {
                 Status.SUCCESS->{
                     result.data?.let {
 
-                        if (it.isFavorite){
-                            binding!!.addDeleteAlbum.setImageResource(FILL_HEART)
-                            binding!!.addDeleteAlbum.setTag(FILL_HEART, FILL_HEART)
-                        }else{
-                            binding!!.addDeleteAlbum.setImageResource(EMPTY_HEART)
-                            binding!!.addDeleteAlbum.setTag(FILL_HEART, EMPTY_HEART)
+                        when(it.isFavorite){
+                            true -> fillTheHeart()
+                            else -> drainTheHeart()
                         }
+
                     }
                 }
+
+               else -> Unit
             }
 
         })
@@ -133,6 +118,8 @@ class SongFragment: Fragment(R.layout.fragment_song) {
         val albumName =  arguments?.getString("album").toString()
         val albumImg = arguments?.getString("albumImg").toString()
         val released = arguments?.getString("released").toString()
+        binding!!.addDeleteAlbum.setImageResource(FILL_HEART)
+        binding!!.addDeleteAlbum.setTag(FILL_HEART, FILL_HEART)
         CoroutineScope(Dispatchers.Main).launch {
             try{
                 RetrofitInstance.api.addAlbum(token, AddAlbum(albumId,artistName,albumImg,albumName,released))
@@ -144,6 +131,8 @@ class SongFragment: Fragment(R.layout.fragment_song) {
 
     }
     private fun deleteAlbum(){
+        binding!!.addDeleteAlbum.setImageResource(EMPTY_HEART)
+        binding!!.addDeleteAlbum.setTag(FILL_HEART, EMPTY_HEART)
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 RetrofitInstance.api.deleteAlbum(token, AlbumId(albumId))
@@ -152,6 +141,37 @@ class SongFragment: Fragment(R.layout.fragment_song) {
             }
         }
     }
+
+    private fun submitSongsToDifferAndSetOnClickForSongAdapter(result:Resource<Song>){
+        result.data?.let { song ->
+            songAdapter.differ.submitList(song)
+
+            songAdapter.setOnItemClick {
+                bundle.putSerializable("song",SerializableSong(song))
+                mainViewModel.addCustomAction(bundle,"song")
+                mainViewModel.playOrToggleSong(it)
+                val bundles = Bundle()
+                bundle.putString("songUri",it.songUrl)
+                bundle.putString("id",it._id)
+                findNavController().navigate(R.id.action_songFragment_to_songPlayingFragment,bundles)
+            }
+
+        }
+    }
+
+
+    private fun fillTheHeart(){
+        binding!!.addDeleteAlbum.setImageResource(FILL_HEART)
+        binding!!.addDeleteAlbum.setTag(FILL_HEART, FILL_HEART)
+    }
+
+    private fun drainTheHeart(){
+        binding!!.addDeleteAlbum.setImageResource(EMPTY_HEART)
+        binding!!.addDeleteAlbum.setTag(FILL_HEART, EMPTY_HEART)
+    }
+
+
+
     private fun assignValues(){
         token = sharePref.getString("token","token").toString()
         albumId = arguments?.getString("albumId").toString()

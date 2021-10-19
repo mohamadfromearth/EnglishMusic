@@ -1,4 +1,4 @@
-package com.example.englishmusic.model
+package com.example.englishmusic.model.artist
 
 data class ArtistItem(
     val __v: Int,

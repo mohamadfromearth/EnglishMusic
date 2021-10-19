@@ -1,4 +1,4 @@
-package com.example.englishmusic.model
+package com.example.englishmusic.model.song
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

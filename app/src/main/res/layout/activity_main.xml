@@ -29,24 +29,16 @@
         tools:layout_editor_absoluteX="-16dp"
         android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/bottomCurSongImgCard"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="@color/bottomPlayerColor"
-            >
-            <ImageView
-                android:id="@+id/bottomCurSongImg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/bottomCurSongImg"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 />
-        </androidx.cardview.widget.CardView>
+
 
 
 
@@ -55,11 +47,11 @@
             android:id="@+id/songNameBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="askjdaskjdask"
+            android:text=""
             android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImgCard"
+            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImg"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -67,13 +59,13 @@
             android:id="@+id/bottomArtistName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:text="aldkasdkasldk"
+            android:text=""
             android:textColor="@color/subText"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImgCard"
+            app:layout_constraintStart_toEndOf="@+id/bottomCurSongImg"
             app:layout_constraintTop_toBottomOf="@+id/songNameBottom"
             app:layout_constraintVertical_bias="0.0" />
 

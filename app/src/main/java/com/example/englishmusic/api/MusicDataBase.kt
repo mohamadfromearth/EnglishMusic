@@ -1,8 +1,7 @@
 package com.example.englishmusic.api
 
 import com.example.englishmusic.model.Search
-import com.example.englishmusic.model.Song
-import java.lang.Exception
+import com.example.englishmusic.model.song.Song
 import javax.inject.Inject
 
 class MusicDataBase @Inject constructor(
@@ -19,7 +18,7 @@ class MusicDataBase @Inject constructor(
        return RetrofitInstance.api.getSearch(search).body()
     }
 
-    suspend fun getFavoriteSong(token:String):Song?{
+    suspend fun getFavoriteSong(token:String): Song?{
         return RetrofitInstance.api.getFavorites(token).body()
     }
 

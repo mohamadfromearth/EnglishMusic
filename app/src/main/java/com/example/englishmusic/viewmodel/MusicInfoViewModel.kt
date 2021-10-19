@@ -7,6 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.englishmusic.api.FollowedId
 import com.example.englishmusic.db.RecentlySongDao
 import com.example.englishmusic.model.*
+import com.example.englishmusic.model.albums.Album
+import com.example.englishmusic.model.artist.Artist
+import com.example.englishmusic.model.artist.ArtistInfo
+import com.example.englishmusic.model.downloads.DownloadSong
+import com.example.englishmusic.model.favorites.FavoriteId
+import com.example.englishmusic.model.favorites.IsFavorite
+import com.example.englishmusic.model.lyric.Lyric
+import com.example.englishmusic.model.song.Song
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Resource
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.repository.MusicRepository
@@ -63,6 +72,9 @@ class MusicInfoViewModel @Inject constructor(
 
 
     val artistInfo = MutableLiveData<Resource<ArtistInfo>>()
+
+
+    val lyric = MutableLiveData<Resource<Lyric>>()
 
 
 
@@ -240,7 +252,7 @@ class MusicInfoViewModel @Inject constructor(
             }
         }
     }
-    fun checkIsFavorite(token:String,favoriteId:FavoriteId) = viewModelScope.launch {
+    fun checkIsFavorite(token:String,favoriteId: FavoriteId) = viewModelScope.launch {
         isFavorite.postValue(Resource(Status.LOADING,null,""))
         try{
             val response = musicRepository.isFavorite(token,favoriteId)
@@ -251,6 +263,23 @@ class MusicInfoViewModel @Inject constructor(
             }
         }
     }
+
+
+    fun getLyric(id:String) = viewModelScope.launch {
+        lyric.postValue(Resource(Status.LOADING,null,""))
+        try {
+            val response = musicRepository.getLyric(id)
+            lyric.postValue(handleResponse(response))
+        }catch (t:Throwable){
+            when(t){
+                is IOException -> lyric.postValue(Resource.error("Network failure",null))
+            }
+        }
+    }
+
+
+
+
     fun getArtistInfo(id:String) = viewModelScope.launch {
         artistInfo.postValue(Resource(Status.LOADING,null,""))
         try{
@@ -267,7 +296,7 @@ class MusicInfoViewModel @Inject constructor(
        recentlySongDao.getAllRecentlySongs(10)
 
 
-   fun upsertRecentlyPlayedSong(song:SongItem) = viewModelScope.launch {
+   fun upsertRecentlyPlayedSong(song: SongItem) = viewModelScope.launch {
        recentlySongDao.upsert(song)
    }
 

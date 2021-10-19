@@ -7,7 +7,6 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DURATION
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.englishmusic.exoPlayer.MusicServiceConnection
@@ -15,11 +14,9 @@ import com.example.englishmusic.exoPlayer.isPlayEnabled
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.isPrepared
 import com.example.englishmusic.model.Constance.Companion.MEDIA_ROOT_ID
-import com.example.englishmusic.model.SongItem
-import com.example.englishmusic.other.Event
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.net.URI
 import javax.inject.Inject
 
 

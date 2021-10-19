@@ -108,7 +108,9 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/artistRecyclerView" />
+                app:layout_constraintTop_toBottomOf="@+id/artistRecyclerView"
+                android:visibility="gone"
+                />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -116,6 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/recentlyPlayedTxt"
+                android:visibility="gone"
                 />
 
 

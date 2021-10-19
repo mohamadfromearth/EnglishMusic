@@ -1,14 +1,14 @@
-package com.example.englishmusic.fragments
+package com.example.englishmusic.fragments.albums
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.englishmusic.R
 import com.example.englishmusic.adapters.AlbumAdapter
 import com.example.englishmusic.databinding.FragmentAllAlbumsBinding
+import com.example.englishmusic.model.albums.AlbumItem
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
 class AllAlbumsFragment: Fragment(R.layout.fragment_all_albums) {
@@ -22,24 +22,27 @@ class AllAlbumsFragment: Fragment(R.layout.fragment_all_albums) {
         setUpRecyclerView()
         subscribeToObservers()
         allAlbumAdapter.setItemClickListener {
-            val bundle = Bundle()
-            bundle.putString("album",it.name)
-            bundle.putString("albumImg",it.imageUrl)
-            bundle.putString("artistName",it.artist)
-            bundle.putString("albumId",it._id)
-            bundle.putString("released",it.released)
-            findNavController().navigate(R.id.action_allAlbumsFragment_to_songFragment,bundle)
+           navigateToSongFragment(it)
 
         }
     }
     private fun subscribeToObservers(){
-        musicInfoViewModel.albums.observe(viewLifecycleOwner, Observer { result ->
+        musicInfoViewModel.albums.observe(viewLifecycleOwner, { result ->
             when(result.status){
+                Status.LOADING -> {
+
+                }
                 Status.SUCCESS->{
                     result.data?.let {
                         allAlbumAdapter.differ.submitList(it)
                     }
                 }
+                Status.ERROR -> {
+
+                }
+
+                else -> Unit
+
             }
 
         })
@@ -49,4 +52,15 @@ class AllAlbumsFragment: Fragment(R.layout.fragment_all_albums) {
         binding!!.allAlbumRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding!!.allAlbumRecyclerView.adapter = allAlbumAdapter
     }
+
+    private fun navigateToSongFragment(it:AlbumItem){
+        val bundle = Bundle()
+        bundle.putString("album",it.name)
+        bundle.putString("albumImg",it.imageUrl)
+        bundle.putString("artistName",it.artist)
+        bundle.putString("albumId",it._id)
+        bundle.putString("released",it.released)
+        findNavController().navigate(R.id.action_allAlbumsFragment_to_songFragment,bundle)
+    }
+
 }

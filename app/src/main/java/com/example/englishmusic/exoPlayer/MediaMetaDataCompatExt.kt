@@ -1,10 +1,10 @@
 package com.example.englishmusic.exoPlayer
 
 import android.support.v4.media.MediaMetadataCompat
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.model.SongItemFav
 
-fun MediaMetadataCompat.toSong():SongItem? {
+fun MediaMetadataCompat.toSong(): SongItem? {
     return description?.let {
 
             SongItem(

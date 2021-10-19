@@ -1,6 +1,5 @@
 package com.example.englishmusic.fragments
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
@@ -14,10 +13,7 @@ import com.example.englishmusic.R
 import com.example.englishmusic.databinding.FragmentSongPlayingDownloadBinding
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.toSong
-import com.example.englishmusic.exoPlayer.toSongFav
-import com.example.englishmusic.model.DownloadSongSerializable
-import com.example.englishmusic.model.SerializableDownloadSong
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MainViewModel
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
@@ -35,7 +31,7 @@ class SongPlayingFragmentForDownloads: Fragment(R.layout.fragment_song_playing_d
     private val songViewModel:SongViewModel by viewModels()
     private lateinit var musicInfoViewModel:MusicInfoViewModel
 
-    private var curPlayingSong:SongItem?=null
+    private var curPlayingSong: SongItem?=null
     private var curPlayingSongMetadata:MediaMetadataCompat?=null
     private var playbackState:PlaybackStateCompat?=null
     private var shouldUpdateSeekbar = true

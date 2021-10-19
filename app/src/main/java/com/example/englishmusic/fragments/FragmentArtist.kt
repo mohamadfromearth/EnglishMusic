@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,14 +17,18 @@ import com.example.englishmusic.adapters.ArtistAdapter
 import com.example.englishmusic.adapters.PlaylistAdapter
 import com.example.englishmusic.adapters.SongAdapter
 import com.example.englishmusic.databinding.FragmentArtistBinding
-import com.example.englishmusic.model.Artist
+import com.example.englishmusic.model.artist.Artist
 import com.example.englishmusic.model.Playlist
+import com.example.englishmusic.model.PlaylistItem
 import com.example.englishmusic.model.SerializableSong
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.artist.ArtistItem
+import com.example.englishmusic.model.song.SerialRecentlySong
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.log
 
 @AndroidEntryPoint
 class FragmentArtist:Fragment(R.layout.fragment_artist) {
@@ -42,53 +44,41 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentArtistBinding.bind(view)
-      token = sharePref.getString("token","token").toString()
         binding = FragmentArtistBinding.bind(view)
-        viewModel = ViewModelProvider(requireActivity()).get(MusicInfoViewModel::class.java)
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-      //  viewModel.getMyArtists(token)
-      //  viewModel.getPlayLists()
+        initial()
+        //getArtistAndPlayList()
         setUpRecyclerViews()
         subscribeToObserver()
         artistAdapter.setOnItemClickListener {
-            val bundle = Bundle()
-            bundle.putString("artist",it.name)
-            bundle.putString("imageUrl",it.artistImg)
-            bundle.putString("id",it._id)
-            findNavController().navigate(R.id.action_fragmentArtist_to_albumFragment,bundle)}
+           navigateToAlbumFragment(it)
+
+        }
         playListAdapter.setOnItemClickListener {
-            val playlist = it.name
-            val bundle=Bundle()
-            bundle.putString("playlist",playlist)
-            findNavController().navigate(R.id.action_fragmentArtist_to_playlistSongFragment,bundle)
+            navigateToPlayListFragment(it)
 
         }
 
         binding!!.tryAgainBtn.setOnClickListener {
-            viewModel.getPlayLists()
-            viewModel.getMyArtists(token)
-
+            getArtistAndPlayList()
         }
     }
     private fun subscribeToObserver(){
-        viewModel.shouldUpdateMyArtist.observe(viewLifecycleOwner, Observer {
+        viewModel.shouldUpdateMyArtist.observe(viewLifecycleOwner,  {
             if (it) viewModel.getMyArtists(token)
         })
 
-        viewModel.playlist.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.playlist.observe(viewLifecycleOwner,  { result ->
             when(result.status){
                 Status.LOADING -> {
-                    binding!!.tryAgainBtn.visibility = View.GONE
-                    binding!!.networkFailureTxt.visibility = View.GONE
-                    binding!!.loading.visibility = View.VISIBLE
-                    binding!!.playlistTxt.visibility = View.GONE
+                    hideTryAgainNetworkFailurePlayListTxts()
+                    showLoadingAnimation()
 
                 }
 
                 Status.SUCCESS -> {
 
-                    binding!!.loading.visibility = View.GONE
-                    binding!!.playlistTxt.visibility = View.VISIBLE
+                    hideLoadingAnimation()
+                    showPlaylistTxtAndOther()
                     result.data?.let {
 
                         playListAdapter.differ.submitList(it)
@@ -96,24 +86,26 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
                 }
 
                 Status.ERROR -> {
-                    error()
+                    submitEmptyListAndShowTryAgainBtn()
                 }
+
+                else -> Unit
             }
 
         })
-        viewModel.myArtists.observe(viewLifecycleOwner, Observer {  result ->
+        viewModel.myArtists.observe(viewLifecycleOwner,  {  result ->
             when(result.status){
                 Status.LOADING -> {
                    loading()
                 }
                 Status.SUCCESS -> {
-                    binding!!.loading.visibility = View.GONE
+                    hideLoadingAnimation()
                     result.data?.let { artist->
 
 
 
                         if (artist.isEmpty()){
-
+                         artistAdapter.differ.submitList(Artist())
                         }else{
                             showArtistTxt()
                             if (artist.size<10) binding!!.myArtistMore.visibility = View.GONE
@@ -132,24 +124,27 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
 
         })
 
-        viewModel.getRecentlySong().observe(viewLifecycleOwner, Observer { song ->
+        viewModel.getRecentlySong().observe(viewLifecycleOwner, { song ->
             val songs = ArrayList<SongItem>()
-            song.map {
-                songs.add(it)
-            }
+
             recentlyPlayedAdapter.setOnItemClick {
                 val bundle = Bundle().apply {
-                    putSerializable("song",SerializableSong(songs))
+                    putSerializable("song",SerialRecentlySong(song))
                 }
 
-                mainViewModel.addCustomAction(bundle,"song")
+                mainViewModel.addCustomAction(bundle,"recentlySong")
                 mainViewModel.playOrToggleSong(it)
+                findNavController().navigate(R.id.action_fragmentArtist_to_songPlayingFragment)
             }
-          recentlyPlayedAdapter.differ.submitList(songs)
+          recentlyPlayedAdapter.differ.submitList(song)
+
 
         })
 
     }
+
+
+
     private fun setUpRecyclerViews(){
         artistAdapter = ArtistAdapter(R.layout.item_big_circle_artist)
         playListAdapter = PlaylistAdapter()
@@ -175,7 +170,7 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
     }
 
 
-    private fun error(){
+    private fun submitEmptyListAndShowTryAgainBtn(){
         playListAdapter.differ.submitList(Playlist())
         artistAdapter.differ.submitList(Artist())
         binding!!.loading.visibility = View.GONE
@@ -185,6 +180,60 @@ class FragmentArtist:Fragment(R.layout.fragment_artist) {
         binding!!.networkFailureTxt.visibility = View.VISIBLE
         binding!!.tryAgainBtn.visibility = View.VISIBLE
     }
+
+  private fun initial(){
+      token = sharePref.getString("token","token").toString()
+      viewModel = ViewModelProvider(requireActivity()).get(MusicInfoViewModel::class.java)
+      mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+  }
+
+
+    private fun getArtistAndPlayList(){
+        viewModel.getMyArtists(token)
+          viewModel.getPlayLists()
+    }
+
+
+    private fun navigateToAlbumFragment(it:ArtistItem){
+        val bundle = Bundle()
+        bundle.putString("artist",it.name)
+        bundle.putString("imageUrl",it.artistImg)
+        bundle.putString("id",it._id)
+        findNavController().navigate(R.id.action_fragmentArtist_to_albumFragment,bundle)
+    }
+
+
+    private fun navigateToPlayListFragment(it:PlaylistItem){
+        val playlist = it.name
+        val bundle=Bundle()
+        bundle.putString("playlist",playlist)
+        findNavController().navigate(R.id.action_fragmentArtist_to_playlistSongFragment,bundle)
+    }
+
+
+    private fun hideTryAgainNetworkFailurePlayListTxts(){
+        binding!!.tryAgainBtn.visibility = View.GONE
+        binding!!.networkFailureTxt.visibility = View.GONE
+        binding!!.playlistTxt.visibility = View.GONE
+        binding!!.recentlyPlayedRecyclerView.visibility = View.GONE
+        binding!!.recentlyPlayedTxt.visibility = View.GONE
+    }
+
+    private fun showLoadingAnimation(){
+        binding!!.loading.visibility = View.VISIBLE
+    }
+
+
+    private fun hideLoadingAnimation(){
+        binding!!.loading.visibility = View.GONE
+    }
+
+    private fun showPlaylistTxtAndOther() {
+        binding!!.playlistTxt.visibility = View.VISIBLE
+        binding!!.recentlyPlayedRecyclerView.visibility = View.VISIBLE
+        binding!!.recentlyPlayedTxt.visibility = View.VISIBLE
+    }
+
 }
 
 

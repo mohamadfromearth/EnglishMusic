@@ -1,4 +1,4 @@
-package com.example.englishmusic.model
+package com.example.englishmusic.model.downloads
 
 import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName

@@ -1,12 +1,10 @@
 package com.example.englishmusic.exoPlayer
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
@@ -15,7 +13,6 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.example.englishmusic.exoPlayer.callback.MusicPlaybackPreparer
 import com.example.englishmusic.exoPlayer.callback.MusicPlayerEventListener
@@ -25,18 +22,15 @@ import com.example.englishmusic.model.Constance.Companion.NETWORK_ERROR
 import com.example.englishmusic.model.Constance.Companion.NOTIFICATION_CHANNEL_ID
 import com.example.englishmusic.model.SerializableDownloadSong
 import com.example.englishmusic.model.SerializableSong
-import com.example.englishmusic.model.Song
-import com.google.android.exoplayer2.C
+import com.example.englishmusic.model.song.SerialRecentlySong
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
 import java.lang.IllegalStateException
 import javax.inject.Inject
-import kotlin.math.log
 
 private const val SERVICE_TAG = "Music service"
 private const val TAG = "debugbazi"
@@ -150,6 +144,7 @@ class MusicService:MediaBrowserServiceCompat() {
 
         musicPlayerEventListener = MusicPlayerEventListener(this)
         exoPlayer.addListener(musicPlayerEventListener)
+
         musicNotificationManager.showNotification(exoPlayer)
 
 
@@ -187,6 +182,12 @@ class MusicService:MediaBrowserServiceCompat() {
            firebaseMusicSource.fetchDownloadMedia(song)
 
        }
+
+      if (action == "recentlySong"){
+          val serial = extras?.getSerializable("song")
+          val song = serial as SerialRecentlySong
+          firebaseMusicSource.fetchRecentlySong(song)
+      }
 
     }
 

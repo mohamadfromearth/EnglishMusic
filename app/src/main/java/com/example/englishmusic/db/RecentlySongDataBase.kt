@@ -1,12 +1,8 @@
 package com.example.englishmusic.db
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.englishmusic.model.SongItem
-import dagger.Provides
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.englishmusic.model.song.SongItem
 
 
 @Database(

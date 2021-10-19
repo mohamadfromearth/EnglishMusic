@@ -2,7 +2,6 @@ package com.example.englishmusic.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,7 +13,7 @@ import com.example.englishmusic.adapters.SearchAdapter
 import com.example.englishmusic.databinding.FragmentSearchBinding
 import com.example.englishmusic.model.Constance.Companion.SEARCH_MUSIC_DELAY
 import com.example.englishmusic.model.SerializableSong
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MainViewModel
 import com.example.englishmusic.viewmodel.MusicInfoViewModel

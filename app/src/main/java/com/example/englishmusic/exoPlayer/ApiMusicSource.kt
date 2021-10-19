@@ -5,20 +5,17 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.MediaMetadataCompat.*
-import android.util.Log
 import androidx.core.net.toUri
 import com.example.englishmusic.api.MusicDataBase
 import com.example.englishmusic.model.SerializableDownloadSong
 import com.example.englishmusic.model.SerializableSong
-import com.example.englishmusic.model.Song
-import com.google.android.exoplayer2.MediaItem
+import com.example.englishmusic.model.song.SerialRecentlySong
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.math.log
 
 class ApiMusicSource @Inject constructor(
   private val musicDatabase: MusicDataBase
@@ -71,6 +68,27 @@ class ApiMusicSource @Inject constructor(
         }
         state = State.STATE_INITIALIZED
     }
+
+    fun fetchRecentlySong(song:SerialRecentlySong){
+        state = State.STATE_INITIALIZING
+        val allSong = song
+        songs = allSong.song.map { song ->
+            MediaMetadataCompat.Builder()
+                .putString(METADATA_KEY_ARTIST, song.artist)
+                .putString(METADATA_KEY_MEDIA_ID, song._id)
+                .putString(METADATA_KEY_TITLE, song.name)
+                .putString(METADATA_KEY_DISPLAY_TITLE, song.name)
+                .putString(METADATA_KEY_DISPLAY_ICON_URI, song.cover)
+                .putString(METADATA_KEY_MEDIA_URI, song.songUrl)
+                .putString(METADATA_KEY_ALBUM_ART_URI, song.songUrl)
+                .putString(METADATA_KEY_DISPLAY_SUBTITLE, song.artist)
+                .putLong(METADATA_KEY_DURATION,song.duration!!.toLong())
+
+                .build()
+        }
+        state = State.STATE_INITIALIZED
+    }
+
 
     fun fetchDownloadMedia(song:SerializableDownloadSong){
         state = State.STATE_INITIALIZING

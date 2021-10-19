@@ -76,7 +76,8 @@
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24"
                 app:layout_constraintTop_toBottomOf="@+id/artistDetailImg"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
+                android:layout_marginTop="-12dp"
+                android:layout_marginEnd="8dp"
                 />
 
             <ImageView
@@ -85,7 +86,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toStartOf="@+id/addAndDeleteFollow"
                 app:layout_constraintTop_toBottomOf="@+id/artistDetailImg"
-                android:layout_margin="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="-12dp"
                 app:srcCompat="@drawable/ic_baseline_info_24" />
 
 

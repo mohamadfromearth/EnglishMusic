@@ -1,14 +1,15 @@
 package com.example.englishmusic
 
+import android.animation.ObjectAnimator
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import android.view.View
-import android.widget.Toast
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -17,15 +18,11 @@ import com.bumptech.glide.Glide
 import com.example.englishmusic.databinding.ActivityMainBinding
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.toSong
-import com.example.englishmusic.model.DownloadSongSerializable
-import com.example.englishmusic.model.SongItem
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.viewmodel.DownloadViewModel
 import com.example.englishmusic.viewmodel.MainViewModel
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
 
  private val musicInfoViewModel: MusicInfoViewModel by viewModels()
+
+  private lateinit var rotateAnim:ObjectAnimator
 
  val mainViewModel:MainViewModel by viewModels()
 
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
  private var songBitmap:Bitmap?=null
 
 
-private var curPlayingSong:SongItem? = null
+private var curPlayingSong: SongItem? = null
 
   private var playbackState:PlaybackStateCompat? = null
 
@@ -76,8 +75,10 @@ private var curPlayingSong:SongItem? = null
         }
 
         postObserversValue()
+        initRotateAnim()
         subscribeToObservers()
         // navigateToSongPlaying()
+
 
         findNavController(R.id.musicNavHostFragment).addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
@@ -107,6 +108,8 @@ private var curPlayingSong:SongItem? = null
             }
 
         }
+
+
 
         binding.bottomPlayer.setOnClickListener {
             curPlayingSong?.let {
@@ -156,6 +159,7 @@ private var curPlayingSong:SongItem? = null
 
           mainViewModel.playbackState.observe(this, Observer {
               playbackState = it
+              playbackState?.isPlaying?.let { it1 -> rotateImageView(it1) }
               binding.playPauseBottom.setImageResource(
                   if (playbackState?.isPlaying == true) R.drawable.exo_controls_pause else R.drawable.exo_controls_play)
           })
@@ -200,6 +204,25 @@ private var curPlayingSong:SongItem? = null
     }
 
 
+    private fun rotateImageView(shouldRotate:Boolean){
+
+        if (shouldRotate){
+            if (rotateAnim.isPaused){
+                rotateAnim.resume()
+                return
+            }
+            rotateAnim.start()
+        }else{
+            rotateAnim.pause()
+        }
+
+    }
+
+private fun initRotateAnim(){
+        rotateAnim = ObjectAnimator.ofFloat(binding.bottomCurSongImg,"rotation",0f,36000f)
+    rotateAnim.duration = 200000
+
+}
 
     }
 

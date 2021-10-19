@@ -1,6 +1,16 @@
 package com.example.englishmusic.api
 
 import com.example.englishmusic.model.*
+import com.example.englishmusic.model.albums.AddAlbum
+import com.example.englishmusic.model.albums.Album
+import com.example.englishmusic.model.artist.AddArtist
+import com.example.englishmusic.model.artist.Artist
+import com.example.englishmusic.model.artist.ArtistId
+import com.example.englishmusic.model.artist.ArtistInfo
+import com.example.englishmusic.model.favorites.FavoriteId
+import com.example.englishmusic.model.favorites.IsFavorite
+import com.example.englishmusic.model.lyric.Lyric
+import com.example.englishmusic.model.song.Song
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -63,7 +73,7 @@ interface MusicApi {
     suspend fun getMyAlbums(@Header("x-auth-token")token:String):Response<Album>
 
     @POST("songs/addAlbum")
-    suspend fun addAlbum(@Header("x-auth-token")token:String,@Body album:AddAlbum):Response<Message>
+    suspend fun addAlbum(@Header("x-auth-token")token:String,@Body album: AddAlbum):Response<Message>
 
     @POST("songs/deleteAlbum")
     suspend fun deleteAlbum(@Header("x-auth-token")token: String,@Body albumId:AlbumId):Response<Message>
@@ -78,14 +88,14 @@ interface MusicApi {
 
 
     @POST("songs/isFavorite")
-    suspend fun isFavorite(@Header("x-auth-token")token:String,@Body favoriteId:FavoriteId):Response<IsFavorite>
+    suspend fun isFavorite(@Header("x-auth-token")token:String,@Body favoriteId: FavoriteId):Response<IsFavorite>
 
 
     @POST("songs/selectArtist")
-    suspend fun selectArtist(@Header("x-auth-token")token:String,@Body artist:AddArtist):Response<Message>
+    suspend fun selectArtist(@Header("x-auth-token")token:String,@Body artist: AddArtist):Response<Message>
 
     @POST("songs/unselectArtist")
-    suspend fun unSelectArtist(@Header("x-auth-token")token:String,@Body artistId:ArtistId):Response<Message>
+    suspend fun unSelectArtist(@Header("x-auth-token")token:String,@Body artistId: ArtistId):Response<Message>
 
 
     @POST("songs/isFollowed")
@@ -104,6 +114,10 @@ interface MusicApi {
 
     @GET("songs/getArtistInfo/{id}")
     suspend fun getArtistInfo(@Path("id")id:String):Response<ArtistInfo>
+
+
+    @GET("songs/getLyric/{id}")
+    suspend fun getLyric(@Path("id")id:String):Response<Lyric>
 
 
 }

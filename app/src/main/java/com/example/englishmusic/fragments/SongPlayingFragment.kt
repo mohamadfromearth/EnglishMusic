@@ -10,7 +10,6 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -19,27 +18,23 @@ import com.example.englishmusic.MainActivity
 import com.example.englishmusic.R
 import com.example.englishmusic.api.RetrofitInstance
 import com.example.englishmusic.databinding.FragmentSongPlayBinding
-import com.example.englishmusic.databinding.LoginRegisterBottomSheetBinding
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.toSong
 import com.example.englishmusic.exoPlayer.toSongFav
 import com.example.englishmusic.model.*
-import com.example.englishmusic.other.Resource
+import com.example.englishmusic.model.favorites.FavoriteId
+import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Status
 import com.example.englishmusic.viewmodel.MainViewModel
 import com.example.englishmusic.viewmodel.MusicInfoViewModel
 import com.example.englishmusic.viewmodel.SongViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.Shapeable
-import com.google.android.material.textview.MaterialTextView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 const val FILL_HEART = R.drawable.ic_baseline_favorite_24_red
 const val EMPTY_HEART = R.drawable.ic_baseline_favorite_border_24
@@ -56,9 +51,11 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
     private val songViewModel:SongViewModel by viewModels()
     private lateinit var musicInfoViewModel: MusicInfoViewModel
 
-    private var curPlayingSong:SongItem? = null
+    private var curPlayingSong: SongItem? = null
     private var playbackState: PlaybackStateCompat? = null
     private var shouldUpdateSeekbar = true
+
+    private val lyricHashmap = HashMap<String,String>()
 
     private var myDownloadId:Long = 0
 
@@ -68,7 +65,13 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         musicInfoViewModel = ViewModelProvider(requireActivity()).get(MusicInfoViewModel::class.java)
         sharedPreferences = (activity as MainActivity).applicationContext.getSharedPreferences("login", Context.MODE_PRIVATE)
+        setDurationToBuffering()
+        musicInfoViewModel.getLyric(arguments?.getString("id").toString())
+        setSubtitleHashmap()
         subscribeToObserver()
+
+
+
         binding!!.ivPlayPauseDetail.setOnClickListener {
                 curPlayingSong?.let {
                     mainViewModel.playOrToggleSong(it,true)
@@ -104,7 +107,7 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
         }
 
     }
-    private fun updateTitleAndSongImage(song:SongItem){
+    private fun updateTitleAndSongImage(song: SongItem){
         val title = "${song.name} - ${song.artist}"
         binding!!.tvSongName.text = title
         Glide.with(this).load(song.cover).into(binding!!.ivSongImage)
@@ -197,12 +200,22 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
     private fun setCurPlayerTimeToTextView(ms:Long){
         val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        binding!!.tvCurTime.text = dateFormat.format(ms)
+        val time = dateFormat.format(ms)
+        binding!!.tvCurTime.text = time
+        lyricHashmap[time]?.let {
+            binding!!.enLyric.text = it
+        }
+
+
     }
     private fun setDurationToTextView(ms:Long){
         val dateFormat = SimpleDateFormat("mm:ss",Locale.getDefault())
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        binding!!.tvSongDuration.text = dateFormat.format(ms)
+        val duration =  dateFormat.format(ms)
+        if (duration!="59:59"){
+            binding!!.tvSongDuration.text = duration
+        }
+
     }
     private fun addToFavorite(song: SongItemFav){
         val isLogin =sharedPreferences.getBoolean("isLogin",false)
@@ -280,6 +293,29 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
         }
 
 
+    }
+
+
+    private fun setDurationToBuffering(){
+      binding!!.tvSongDuration.text = "Buffering"
+    }
+
+
+    private fun setSubtitleHashmap(){
+        musicInfoViewModel.lyric.observe(viewLifecycleOwner,{ result ->
+            when(result.status){
+                Status.SUCCESS -> {
+                    result.data?.let {
+                        Toast.makeText(requireContext(),it[0].time,Toast.LENGTH_SHORT).show()
+                        it.map { lyricItem ->
+                        lyricHashmap.put(lyricItem.time,lyricItem.enLyric)
+
+                        }
+                    }
+                }
+            }
+
+        })
     }
 
 
