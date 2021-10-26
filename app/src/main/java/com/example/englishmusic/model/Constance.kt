@@ -13,6 +13,11 @@ class Constance {
         const val DOWNLOAD_NOTIFICATION_CHANNEL_ID="DOWNLOAD_NOTIFICATION_CHANNEL_ID"
 
 
+        const val SHOW_EN_SUBTITLE = "SHOW_EN_SUBTITLE"
+
+        const val SHOW_PER_SUBTITLE = "SHOW_PER_SUBTITLE"
+
+
         const val DATA_BASE_NAME = "recently_db"
 
 
@@ -23,6 +28,10 @@ class Constance {
         const val IS_ARTIST_SELECTED = "IS_ARTIST_SELECTED"
 
         const val SEARCH_MUSIC_DELAY = 500L
+
+
+
+        const val ID = "ID"
 
 
         const val BASE_URL = "http://192.168.1.111:3000/api/"

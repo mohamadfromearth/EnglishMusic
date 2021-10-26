@@ -15,7 +15,9 @@ import com.example.englishmusic.databinding.FragmentSongBinding
 import com.example.englishmusic.dialog.SongDialog
 import com.example.englishmusic.fragments.EMPTY_HEART
 import com.example.englishmusic.fragments.FILL_HEART
+
 import com.example.englishmusic.model.*
+import com.example.englishmusic.model.Constance.Companion.ID
 import com.example.englishmusic.model.albums.AddAlbum
 import com.example.englishmusic.model.favorites.FavoriteId
 import com.example.englishmusic.model.song.Song
@@ -151,8 +153,8 @@ class SongFragment: Fragment(R.layout.fragment_song) {
                 mainViewModel.addCustomAction(bundle,"song")
                 mainViewModel.playOrToggleSong(it)
                 val bundles = Bundle()
-                bundle.putString("songUri",it.songUrl)
-                bundle.putString("id",it._id)
+                bundles.putString("songUri",it.songUrl)
+                bundles.putString(ID,it._id)
                 findNavController().navigate(R.id.action_songFragment_to_songPlayingFragment,bundles)
             }
 

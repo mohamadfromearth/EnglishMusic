@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/black"
     >
 
     <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/bottomNav"
         android:id="@+id/albumCardView"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -15,23 +17,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-            android:id="@+id/albumImg"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/albumImg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/gradiant"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nameOfAlbum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Happier than ever"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                 />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.cardview.widget.CardView>
 
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/nameOfAlbum"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Happier than ever"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/albumCardView" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeOfTheReleased"

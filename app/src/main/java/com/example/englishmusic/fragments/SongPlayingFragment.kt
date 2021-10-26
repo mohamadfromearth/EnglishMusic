@@ -18,10 +18,14 @@ import com.example.englishmusic.MainActivity
 import com.example.englishmusic.R
 import com.example.englishmusic.api.RetrofitInstance
 import com.example.englishmusic.databinding.FragmentSongPlayBinding
+import com.example.englishmusic.dialog.SubtitleOptionDialog
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.toSong
 import com.example.englishmusic.exoPlayer.toSongFav
 import com.example.englishmusic.model.*
+import com.example.englishmusic.model.Constance.Companion.ID
+import com.example.englishmusic.model.Constance.Companion.SHOW_EN_SUBTITLE
+import com.example.englishmusic.model.Constance.Companion.SHOW_PER_SUBTITLE
 import com.example.englishmusic.model.favorites.FavoriteId
 import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.other.Status
@@ -34,10 +38,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.HashMap
 
 const val FILL_HEART = R.drawable.ic_baseline_favorite_24_red
 const val EMPTY_HEART = R.drawable.ic_baseline_favorite_border_24
+
+const val SUBTITLE_OPTION_TAG = "SUBTITLE_OPTION_TAG"
 
 @AndroidEntryPoint
 class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
@@ -55,9 +62,15 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
     private var playbackState: PlaybackStateCompat? = null
     private var shouldUpdateSeekbar = true
 
+    @Inject
+    lateinit var sharePre:SharedPreferences
+
     private val lyricHashmap = HashMap<String,String>()
 
     private var myDownloadId:Long = 0
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,9 +79,11 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
         musicInfoViewModel = ViewModelProvider(requireActivity()).get(MusicInfoViewModel::class.java)
         sharedPreferences = (activity as MainActivity).applicationContext.getSharedPreferences("login", Context.MODE_PRIVATE)
         setDurationToBuffering()
-        musicInfoViewModel.getLyric(arguments?.getString("id").toString())
+        musicInfoViewModel.getLyric(arguments?.getString(ID).toString())
+        setSubtitleState()
         setSubtitleHashmap()
         subscribeToObserver()
+        setSubtitleText()
 
 
 
@@ -105,6 +120,11 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
         binding!!.download.setOnClickListener {
             downloadSong()
         }
+
+       binding!!.songSub.setOnClickListener {
+           //visibleSubtitle()
+           showSubtitleOptionDialog()
+       }
 
     }
     private fun updateTitleAndSongImage(song: SongItem){
@@ -203,7 +223,8 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
         val time = dateFormat.format(ms)
         binding!!.tvCurTime.text = time
         lyricHashmap[time]?.let {
-            binding!!.enLyric.text = it
+            musicInfoViewModel.subtitle = it
+            binding!!.enLyric.text = musicInfoViewModel.subtitle
         }
 
 
@@ -313,9 +334,45 @@ class SongPlayingFragment:Fragment(R.layout.fragment_song_play) {
                         }
                     }
                 }
+
+               Status.ERROR -> {
+                   Toast.makeText(requireContext(),result.message,Toast.LENGTH_SHORT).show()
+               }
             }
 
         })
+    }
+
+
+    private fun visibleSubtitle(){
+        binding!!.enLyric.visibility = View.VISIBLE
+       /* binding!!.songPlayingScrollView.post{
+            binding!!.songPlayingScrollView.fullScroll(View.FOCUS_DOWN)
+        }*/
+
+    }
+
+
+    private fun setSubtitleText(){
+        binding!!.enLyric.text = musicInfoViewModel.subtitle
+    }
+
+
+
+    private fun showSubtitleOptionDialog(){
+        SubtitleOptionDialog(){
+            setSubtitleState()
+         }.show(childFragmentManager, SUBTITLE_OPTION_TAG)
+    }
+
+
+    private fun setSubtitleState(){
+       val showEnSub = sharePre.getBoolean(SHOW_EN_SUBTITLE,false)
+        val showPerSub = sharePre.getBoolean(SHOW_PER_SUBTITLE,false)
+        when(showEnSub){
+            true -> binding!!.enLyric.visibility = View.VISIBLE
+            false -> binding!!.enLyric.visibility = View.GONE
+        }
     }
 
 

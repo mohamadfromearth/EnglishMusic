@@ -11,6 +11,7 @@ import com.example.englishmusic.model.favorites.FavoriteId
 import com.example.englishmusic.model.favorites.IsFavorite
 import com.example.englishmusic.model.lyric.Lyric
 import com.example.englishmusic.model.song.Song
+import com.example.englishmusic.model.userPlaylist.UserPlayList
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -120,6 +121,42 @@ interface MusicApi {
     suspend fun getLyric(@Path("id")id:String):Response<Lyric>
 
 
+    @POST("songs/createPlaylist")
+    suspend fun createPlaylist(@Header("x-auth-token")token: String, @Body name:Name):Response<Message>
+
+
+    @GET("songs/getUserPlaylists")
+    suspend fun getPlaylist(@Header("x-auth-token")token:String):Response<UserPlayList>
+
+
+    @POST("songs/addSongToPlaylist")
+    suspend fun addSongToPlaylist(@Header("x-auth-token")token:String,@Body addPlaylist:AddPlaylistSong):Response<Message>
+
+    @DELETE("/songs/deleteUserPlaylist")
+    suspend fun deleteUserPlaylist(@Header("x-auth-token")token:String,@Body playlistId:PlaylistId):Response<Message>
+
+
+    @DELETE("/songs/deletePlaylistSong")
+    suspend fun deletePlaylistSong(@Header("x-auth-token")token:String,@Body deletePlaylistSong:DeletePlaylistSong):Response<Message>
+
+
+
+
+
+    @GET("/songs/getPlaylistSongs/{playlistId}")
+    suspend fun getPlaylistSongs(@Header("x-auth-token")token:String,@Path("playlistId")playlistId: String):Response<Message>
+
+
+
+
+
+
+    
+
+
+
+
+
 }
 
 data class FollowedId(
@@ -129,3 +166,32 @@ data class FollowedId(
 data class AlbumId(
     val albumId:String
 )
+
+data class Name(
+    val name:String
+)
+
+
+data class PlaylistId(
+    val playlistId:String
+)
+
+
+data class AddPlaylistSong(
+    val playlistId:String,
+    val _id:String,
+    val name:String,
+    val artist:String,
+    val songUrl:String,
+    val duration:Int,
+    val album:String,
+    val genre:String,
+    val cover:String
+)
+
+
+data class DeletePlaylistSong(
+    val playlistId:String,
+    val playlistSong:String
+)
+

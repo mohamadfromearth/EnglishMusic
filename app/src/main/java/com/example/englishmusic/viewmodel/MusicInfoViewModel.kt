@@ -78,6 +78,11 @@ class MusicInfoViewModel @Inject constructor(
 
 
 
+    var subtitle:String=""
+
+
+
+
 
     fun shouldUpdateMyArtist(value:Boolean){
         shouldUpdateMyArtist.value = value

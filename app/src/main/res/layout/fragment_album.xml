@@ -47,79 +47,141 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/artistDetailImg"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/artistDetailImgCard"
+
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintTop_toBottomOf="@+id/artistName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/black"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="1dp"
 
-            <TextView
-                android:id="@+id/artistName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="MGK"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/artistDetailImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:elevation="0dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:background="@drawable/gradiant"
+                        app:layout_constraintBottom_toBottomOf="@+id/artistDetailImg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/artistName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@color/black"
+                        android:text="MGK"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/artistDetailImg" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
 
             <ImageView
                 android:id="@+id/addAndDeleteFollow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_baseline_favorite_border_24"
-                app:layout_constraintTop_toBottomOf="@+id/artistDetailImg"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="-12dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="-16dp"
                 android:layout_marginEnd="8dp"
-                />
+
+                android:elevation="1dp"
+                app:layout_constraintEnd_toEndOf="@+id/artistDetailImgCard"
+                app:layout_constraintTop_toBottomOf="@+id/artistDetailImgCard"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
             <ImageView
                 android:id="@+id/artistInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:elevation="1dp"
                 app:layout_constraintEnd_toStartOf="@+id/addAndDeleteFollow"
-                app:layout_constraintTop_toBottomOf="@+id/artistDetailImg"
+                app:layout_constraintTop_toBottomOf="@+id/artistDetailImgCard"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="-12dp"
+                android:layout_marginTop="-16dp"
                 app:srcCompat="@drawable/ic_baseline_info_24" />
 
 
-            <TextView
-                android:id="@+id/topSongsTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Top songs"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/artistInfo" />
-
-            <TextView
-                android:id="@+id/viewAllTopSongs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/subText"
-                android:layout_margin="8dp"
-                android:text="View all"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@+id/artistInfo"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/topSongsRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/topSongsTxt" />
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginTop="16dp"
+                    android:id="@+id/topSongLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/artistInfo"
+                    android:background="@color/bottomPlayerColor"
+                    >
+
+                    <TextView
+                        android:layout_marginStart="8dp"
+                        android:id="@+id/topSongsTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Top songs"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toTopOf="@+id/topSongsRecyclerView"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/viewAllTopSongs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="View all"
+                        android:textColor="@color/subText"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toTopOf="@+id/topSongsRecyclerView"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/topSongsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/topSongLayout"
+            android:layout_marginTop="8dp"
+            android:background="@color/bottomPlayerColor"
+            >
 
             <TextView
                 android:id="@+id/albumsTxt"
@@ -130,29 +192,36 @@
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topSongsRecyclerView" />
+                app:layout_constraintTop_toTopOf="parent"
+                 />
 
             <TextView
                 android:id="@+id/viewAllAlbums"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+
+                android:gravity="bottom"
                 android:text="View all"
-                android:layout_margin="8dp"
-                android:textSize="14sp"
                 android:textColor="@color/subText"
-                app:layout_constraintTop_toBottomOf="@+id/topSongsRecyclerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-
-
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/albumRecyclerView"
+                app:layout_constraintEnd_toEndOf="parent" />
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/albumRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/albumsTxt" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

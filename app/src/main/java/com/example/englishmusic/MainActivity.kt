@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.englishmusic.databinding.ActivityMainBinding
 import com.example.englishmusic.exoPlayer.isPlaying
 import com.example.englishmusic.exoPlayer.toSong
+import com.example.englishmusic.model.Constance.Companion.ID
 import com.example.englishmusic.model.song.SongItem
 import com.example.englishmusic.viewmodel.DownloadViewModel
 import com.example.englishmusic.viewmodel.MainViewModel
@@ -119,8 +120,11 @@ private var curPlayingSong: SongItem? = null
 
                     findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragmentForDownload)
                 }else{
+                    val bundle = Bundle().apply {
+                        putString(ID,it._id)
+                    }
 
-                    findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragment)
+                    findNavController(R.id.musicNavHostFragment).navigate(R.id.GlobalActionToSongPlayingFragment,bundle)
                 }
 
             }
